@@ -49,6 +49,9 @@ class StudentListPyHamcrestTest(unittest.TestCase):
     def test_get_student_by_number_with_array(self):
         assert_that(calling(self.temp.getStudentByNumber).with_args([1]), raises(ValueError))
 
+    def test_get_student_by_negative_number(self):
+        assert_that(calling(self.temp.getStudentByNumber).with_args(-2), raises(ValueError))
+
 
 
 
