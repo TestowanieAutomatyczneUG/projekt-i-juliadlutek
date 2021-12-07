@@ -19,8 +19,11 @@ class StudentList:
         return result
 
     def getStudentByNumber(self, num):
-        # if type(num)
-        if len(self.students) < num:
+        if type(num) != int:
+            raise ValueError("Numer musi być liczbą całkowitą!")
+        elif num <= 0:
+            raise ValueError("Numer musi być liczbą dodatnią!")
+        elif len(self.students) < num:
             raise Exception("Uczeń o podanym numerze nie istnieje!")
         student = self.students[num-1]
         return student
