@@ -1,6 +1,7 @@
 import unittest
 from hamcrest import *
 from src.sample.studentList import StudentList
+from src.sample.student import Student
 
 
 class StudentListPyHamcrestTest(unittest.TestCase):
@@ -17,6 +18,32 @@ class StudentListPyHamcrestTest(unittest.TestCase):
         assert_that(
             self.temp.getAllStudents(),
             equal_to_ignoring_whitespace("1. Maria Kowalska 2. Jan Nowak 3. Anna Nowak"))
+
+    def test_get_student_by_number(self):
+        self.temp.addStudent("Maria", "Kowalska")
+        self.temp.addStudent("Jan", "Nowak")
+        assert_that(
+            self.temp.getStudentByNumber(1),
+            instance_of(Student))
+
+    def test_get_not_existing_student_by_number(self):
+        self.temp.addStudent("Maria", "Kowalska")
+        assert_that(calling(self.temp.getStudentByNumber).with_args(5), raises(Exception))
+
+    # def test_get_student_by_number_with_str(self):
+    #     assert_that(calling(self.temp.getStudentByNumber).with_args("maria"), raises(ValueError))
+    #
+    # def test_get_student_by_number_with_bool(self):
+    #     assert_that(calling(self.temp.getStudentByNumber).with_args(True), raises(ValueError))
+    #
+    # def test_get_student_by_number_with_none(self):
+    #     assert_that(calling(self.temp.getStudentByNumber).with_args(None), raises(ValueError))
+    #
+    # def test_get_student_by_number_with_array(self):
+    #     assert_that(calling(self.temp.getStudentByNumber).with_args([1]), raises(ValueError))
+
+
+
 
     def tearDown(self):
         self.temp = None
