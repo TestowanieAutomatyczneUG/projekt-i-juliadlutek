@@ -1,3 +1,5 @@
-# the inclusion of the tests module is not meant to offer best practices for
-# testing in general, but rather to support the `find_packages` example in
-# setup.py that excludes installing the "tests" package
+
+from .test_assertpy_student_list import *
+from .test_assertpy_student import *
+from .test_pyhamcrest_student_list import *
+from .test_pyhamcrest_student import *
