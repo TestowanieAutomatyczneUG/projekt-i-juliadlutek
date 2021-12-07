@@ -17,3 +17,11 @@ class StudentList:
             result += str(i) + ". " + str(student.name) + " " + str(student.surname) + "\n"
             i += 1
         return result
+
+    def getStudentByNumber(self, num):
+        if len(self.students) < num:
+            raise Exception("Uczeń o podanym numerze nie istnieje!")
+        student = self.students[num-1]
+        return student
+
+
