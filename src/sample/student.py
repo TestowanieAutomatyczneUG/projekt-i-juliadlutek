@@ -36,13 +36,43 @@ class Student:
           ...
         ValueError: Imię ucznia musi być typu string!
         """
-
         if type(name) != str:
             raise ValueError("Imię ucznia musi być typu string!")
         elif len(name) == 0:
             raise ValueError("Imię ucznia nie może być puste!")
         self.name = name
         return f"Zmieniono imię ucznia na {name}!"
+
+    def editStudentSurame(self, surname):
+        """Changes the student's name
+        >>> s.editStudentSurname("Nowak")
+        'Zmieniono nazwisko ucznia na Nowak!'
+        >>> s.editStudentSurname("")
+        Traceback (most recent call last):
+          ...
+        ValueError: Nazwisko ucznia nie może być puste!
+        >>> s.editStudentSurname(10)
+        Traceback (most recent call last):
+          ...
+        ValueError: Nazwisko ucznia musi być typu string!
+        >>> s.editStudentSurname(True)
+        Traceback (most recent call last):
+          ...
+        ValueError: Nazwisko ucznia musi być typu string!
+        >>> s.editStudentSurname(None)
+        Traceback (most recent call last):
+          ...
+        ValueError: Nazwisko ucznia musi być typu string!
+        >>> s.editStudentSurame(["Ala"])
+        Traceback (most recent call last):
+          ...
+        ValueError: Nazwisko ucznia musi być typu string!
+        >>> s.editStudentSurame(-2.3)
+        Traceback (most recent call last):
+          ...
+        ValueError: Nazwisko ucznia musi być typu string!
+        """
+
 
 
 if __name__ == "__main__":
