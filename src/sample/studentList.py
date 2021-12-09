@@ -28,4 +28,5 @@ class StudentList:
         student = self.students[num-1]
         return student
 
-
+    def deleteStudentByNumber(self, num):
+        return
