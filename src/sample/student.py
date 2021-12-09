@@ -37,6 +37,13 @@ class Student:
         ValueError: Imię ucznia musi być typu string!
         """
 
+        if type(name) != str:
+            raise ValueError("Imię ucznia musi być typu string!")
+        elif len(name) == 0:
+            raise ValueError("Imię ucznia nie może być puste!")
+        self.name = name
+        return f"Zmieniono imię ucznia na {name}!"
+
 
 if __name__ == "__main__":
     import doctest
