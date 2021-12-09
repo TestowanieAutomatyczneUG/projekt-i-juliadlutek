@@ -43,8 +43,8 @@ class Student:
         self.name = name
         return f"Zmieniono imię ucznia na {name}!"
 
-    def editStudentSurame(self, surname):
-        """Changes the student's name
+    def editStudentSurname(self, surname):
+        """Changes the student's surname
         >>> s.editStudentSurname("Nowak")
         'Zmieniono nazwisko ucznia na Nowak!'
         >>> s.editStudentSurname("")
@@ -63,15 +63,22 @@ class Student:
         Traceback (most recent call last):
           ...
         ValueError: Nazwisko ucznia musi być typu string!
-        >>> s.editStudentSurame(["Ala"])
+        >>> s.editStudentSurname(["Ala"])
         Traceback (most recent call last):
           ...
         ValueError: Nazwisko ucznia musi być typu string!
-        >>> s.editStudentSurame(-2.3)
+        >>> s.editStudentSurname(-2.3)
         Traceback (most recent call last):
           ...
         ValueError: Nazwisko ucznia musi być typu string!
         """
+
+        if type(surname) != str:
+            raise ValueError("Nazwisko ucznia musi być typu string!")
+        elif len(surname) == 0:
+            raise ValueError("Nazwisko ucznia nie może być puste!")
+        self.surname = surname
+        return f"Zmieniono nazwisko ucznia na {surname}!"
 
 
 
