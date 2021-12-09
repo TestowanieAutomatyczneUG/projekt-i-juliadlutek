@@ -29,4 +29,10 @@ class StudentList:
         return student
 
     def deleteStudentByNumber(self, num):
-        return
+        if type(num) != int or num <= 0:
+            raise ValueError("Numer musi być dodatnią liczbą całkowitą!")
+        elif len(self.students) < num:
+            raise ValueError("Uczeń o podanym numerze nie istnieje!")
+        student = self.getStudentByNumber(num)
+        self.students.remove(student)
+        del student
