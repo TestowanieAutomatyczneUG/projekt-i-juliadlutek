@@ -23,70 +23,70 @@ class StudentListPyHamcrestTest(unittest.TestCase):
         self.temp.addStudent("Maria", "Kowalska")
         self.temp.addStudent("Jan", "Nowak")
         assert_that(
-            self.temp.getStudentByNumber(1),
+            self.temp.getStudentById(1),
             instance_of(Student))
 
     def test_get_student_by_number_correct_name(self):
         self.temp.addStudent("Maria", "Kowalska")
         self.temp.addStudent("Jan", "Nowak")
         assert_that(
-            self.temp.getStudentByNumber(1).name,
+            self.temp.getStudentById(1).name,
             equal_to("Maria"))
 
     def test_get_not_existing_student_by_number(self):
         self.temp.addStudent("Maria", "Kowalska")
-        assert_that(calling(self.temp.getStudentByNumber).with_args(5), raises(Exception))
+        assert_that(calling(self.temp.getStudentById).with_args(5), raises(Exception))
 
     def test_get_student_by_number_with_str(self):
-        assert_that(calling(self.temp.getStudentByNumber).with_args("maria"), raises(ValueError))
+        assert_that(calling(self.temp.getStudentById).with_args("maria"), raises(ValueError))
 
     def test_get_student_by_number_with_bool(self):
-        assert_that(calling(self.temp.getStudentByNumber).with_args(True), raises(ValueError))
+        assert_that(calling(self.temp.getStudentById).with_args(True), raises(ValueError))
 
     def test_get_student_by_number_with_none(self):
-        assert_that(calling(self.temp.getStudentByNumber).with_args(None), raises(ValueError))
+        assert_that(calling(self.temp.getStudentById).with_args(None), raises(ValueError))
 
     def test_get_student_by_number_with_array(self):
-        assert_that(calling(self.temp.getStudentByNumber).with_args([1]), raises(ValueError))
+        assert_that(calling(self.temp.getStudentById).with_args([1]), raises(ValueError))
 
     def test_get_student_by_number_with_float(self):
-        assert_that(calling(self.temp.getStudentByNumber).with_args(2.34), raises(ValueError))
+        assert_that(calling(self.temp.getStudentById).with_args(2.34), raises(ValueError))
 
     def test_get_student_by_negative_number(self):
-        assert_that(calling(self.temp.getStudentByNumber).with_args(-2), raises(ValueError))
+        assert_that(calling(self.temp.getStudentById).with_args(-2), raises(ValueError))
 
     def test_student_delete_by_number(self):
         self.temp.addStudent("Maria", "Kowalska")
         self.temp.addStudent("Jan", "Nowak")
-        self.temp.deleteStudentByNumber(2)
+        self.temp.deleteStudentById(2)
         assert_that(len(self.temp.students), equal_to(1))
 
     def test_student_delete_by_number_only_student(self):
         self.temp.addStudent("Maria", "Kowalska")
-        self.temp.deleteStudentByNumber(1)
+        self.temp.deleteStudentById(1)
         assert_that(self.temp.getAllStudents(), equal_to(""))
 
     def test_delete_by_number_not_existing_student(self):
         self.temp.addStudent("Maria", "Kowalska")
-        assert_that(calling(self.temp.deleteStudentByNumber).with_args(5), raises(Exception))
+        assert_that(calling(self.temp.deleteStudentById).with_args(5), raises(Exception))
 
     def test_delete_student_by_number_with_str(self):
-        assert_that(calling(self.temp.deleteStudentByNumber).with_args("maria"), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentById).with_args("maria"), raises(ValueError))
 
     def test_delete_student_by_number_with_bool(self):
-        assert_that(calling(self.temp.deleteStudentByNumber).with_args(True), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentById).with_args(True), raises(ValueError))
 
     def test_delete_student_by_number_with_none(self):
-        assert_that(calling(self.temp.deleteStudentByNumber).with_args(None), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentById).with_args(None), raises(ValueError))
 
     def test_delete_student_by_number_with_array(self):
-        assert_that(calling(self.temp.deleteStudentByNumber).with_args([1]), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentById).with_args([1]), raises(ValueError))
 
     def test_delete_student_by_number_with_float(self):
-        assert_that(calling(self.temp.deleteStudentByNumber).with_args(2.34), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentById).with_args(2.34), raises(ValueError))
 
     def test_delete_student_by_negative_number(self):
-        assert_that(calling(self.temp.deleteStudentByNumber).with_args(-2), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentById).with_args(-2), raises(ValueError))
 
 
 

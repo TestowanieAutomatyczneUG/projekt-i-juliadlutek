@@ -1,14 +1,16 @@
 class Student:
-    def __init__(self, name, surname):
+    def __init__(self, name, surname, studentId):
         if type(name) != str or len(name) == 0:
             raise ValueError("Imię ucznia musi być typu string!")
         elif type(surname) != str or len(surname) == 0:
             raise ValueError("Nazwisko ucznia musi być typu string!")
+        self.id = studentId
         self.name = name
         self.surname = surname
 
     def editStudentName(self, name):
-        """Changes the student's name
+        """Changes the student's
+        >>> s = Student("Maria", "Kowalska", 10)
         >>> s.editStudentName("Marysia")
         'Zmieniono imię ucznia na Marysia!'
         >>> s.editStudentName("")
@@ -45,6 +47,7 @@ class Student:
 
     def editStudentSurname(self, surname):
         """Changes the student's surname
+        >>> s = Student("Maria", "Kowalska", 10)
         >>> s.editStudentSurname("Nowak")
         'Zmieniono nazwisko ucznia na Nowak!'
         >>> s.editStudentSurname("")
@@ -81,7 +84,5 @@ class Student:
         return f"Zmieniono nazwisko ucznia na {surname}!"
 
 
-
 if __name__ == "__main__":
     import doctest
-    doctest.testmod(extraglobs={'s': Student("Maria", "Kowalska")})
