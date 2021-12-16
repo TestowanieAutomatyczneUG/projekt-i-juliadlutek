@@ -93,5 +93,14 @@ class Student:
             return f"Dodano nowy przedmiot - {name}!"
         raise Exception("Podany przedmiot już istnieje!")
 
+    def deleteStudentLecture(self, name):
+        if type(name) != str or name == '':
+            raise ValueError("Nazwa przedmiotu musi być typu string!")
+        if not name in self.lectures:
+            raise Exception("Podany przedmiot nie istnieje!")
+        del self.lectures[name]
+        return f"Usunięto przedmiot - {name}!"
+
+
 if __name__ == "__main__":
     import doctest
