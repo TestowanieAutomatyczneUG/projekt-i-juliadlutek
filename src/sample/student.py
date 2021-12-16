@@ -7,6 +7,8 @@ class Student:
         self.id = studentId
         self.name = name
         self.surname = surname
+        self.lectures = {}
+        self.comments = []
 
     def editStudentName(self, name):
         """Changes the student's
@@ -83,6 +85,13 @@ class Student:
         self.surname = surname
         return f"Zmieniono nazwisko ucznia na {surname}!"
 
+    def addStudentLecture(self, name):
+        if type(name) != str or name == '':
+            raise ValueError("Nazwa przedmiotu musi być typu string!")
+        if not name in self.lectures:
+            self.lectures[name] = []
+            return f"Dodano nowy przedmiot - {name}!"
+        raise Exception("Podany przedmiot już istnieje!")
 
 if __name__ == "__main__":
     import doctest
