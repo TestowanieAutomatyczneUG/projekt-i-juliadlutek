@@ -63,7 +63,8 @@ class StudentAssertpyTest(unittest.TestCase):
     def test_delete_student_grade_correct(self):
         self.temp.addStudentLecture("Matematyka")
         self.temp.addStudentGrade("Matematyka", 5)
-        assert_that(self.temp.deleteStudentGrade("Matematyka", 5)).is_equal_to("Usunięto ocenę 5 z przedmiotu Matematyka")
+        assert_that(self.temp.deleteStudentGrade("Matematyka", 5))\
+            .is_equal_to("Usunięto ocenę 5 z przedmiotu Matematyka")
 
     def test_delete_student_grade_correct_contains(self):
         self.temp.addStudentLecture("Angielski")

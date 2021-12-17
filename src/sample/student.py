@@ -111,6 +111,18 @@ class Student:
         self.lectures[name].append(grade)
         return f"Dodano ocenę {grade} do przedmiotu {name}"
 
+    def deleteStudentGrade(self, name, grade):
+        if type(grade) != int or grade < 1 or grade > 6:
+            raise ValueError("Ocena musi być liczbą cakowitą z przedziau od 1 do 6")
+        elif type(name) != str or name == "":
+            raise ValueError("Nazwa przedmiotu musi być typu string!")
+        elif name not in self.lectures:
+            raise Exception("Podany przedmiot nie istnieje!")
+        elif grade not in self.lectures[name]:
+            raise Exception("Podana ocena nie istnieje!")
+        self.lectures[name].remove(grade)
+        return f"Usunięto ocenę {grade} z przedmiotu {name}"
+
 
 if __name__ == "__main__":
     import doctest
