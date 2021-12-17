@@ -88,7 +88,7 @@ class Student:
     def addStudentLecture(self, name):
         if type(name) != str or name == '':
             raise ValueError("Nazwa przedmiotu musi być typu string!")
-        if not name in self.lectures:
+        if name not in self.lectures:
             self.lectures[name] = []
             return f"Dodano nowy przedmiot - {name}!"
         raise Exception("Podany przedmiot już istnieje!")
@@ -96,7 +96,7 @@ class Student:
     def deleteStudentLecture(self, name):
         if type(name) != str or name == '':
             raise ValueError("Nazwa przedmiotu musi być typu string!")
-        if not name in self.lectures:
+        if name not in self.lectures:
             raise Exception("Podany przedmiot nie istnieje!")
         del self.lectures[name]
         return f"Usunięto przedmiot - {name}!"
