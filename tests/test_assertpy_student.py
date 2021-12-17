@@ -60,6 +60,17 @@ class StudentAssertpyTest(unittest.TestCase):
             .when_called_with(["Angielski"]) \
             .contains("Nazwa przedmiotu musi być typu string!")
 
+    def test_delete_student_grade_correct(self):
+        self.temp.addStudentLecture("Matematyka")
+        self.temp.addStudentGrade("Matematyka", 5)
+        assert_that(self.temp.deleteStudentGrade("Matematyka", 5)).is_equal_to("Usunięto ocenę 5 z przedmiotu Matematyka")
+
+    def test_delete_student_grade_correct_contains(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        assert_that(self.temp.deleteStudentGrade("Angielski", 2)).contains("2", "Angielski")
+
+
 
     def tearDown(self):
         self.temp = None

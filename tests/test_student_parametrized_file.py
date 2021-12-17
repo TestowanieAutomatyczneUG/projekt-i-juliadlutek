@@ -6,6 +6,8 @@ from src.sample.student import Student
 class TestFizzBuzz(unittest.TestCase):
     def setUp(self):
         self.temp = Student("Jan", "Nowak", 10)
+        self.temp.addStudentLecture("Matematyka")
+        self.temp.addStudentGrade(4)
 
     def test_from_file(self):
         file = open("../data/data.json")
