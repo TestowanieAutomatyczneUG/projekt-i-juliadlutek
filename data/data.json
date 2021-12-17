@@ -1,0 +1,17 @@
+[
+	["Matematyka", 10, 1],
+	["Matematyka", -10, "ValueError"],
+	["Matematyka", "", "ValueError"],
+	["Matematyka", "ala", "ValueError"],
+	["Matematyka", "False", "ValueError"],
+	["Matematyka", "None", "ValueError"],
+	["Matematyka", [], "ValueError"],
+	["Matematyka", 5, "Exception"],
+	["Polski", 5, "Exception"],
+	["", 5, "ValueError"],
+	[23, 5, "ValueError"],
+	[2.34, 5, "ValueError"],
+	["True", 5, "ValueError"],
+	["None", 5, "ValueError"],
+	[[], 5, "ValueError"]
+]
