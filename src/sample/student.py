@@ -130,6 +130,16 @@ class Student:
             raise Exception("Podany przedmiot nie istnieje!")
         return self.lectures[name]
 
+    def getStudentAverage(self, name):
+        grades = self.getStudentGrades(name)
+        if not grades:
+            raise Exception("Nie dodano żadnych ocen do tego przedmiotu.")
+        amount = 0
+        for grade in grades:
+            amount += grade
+        result = amount / len(grades)
+        return float("%.2f" % result)
+
 
 if __name__ == "__main__":
     import doctest
