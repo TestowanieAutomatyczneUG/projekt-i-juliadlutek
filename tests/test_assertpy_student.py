@@ -106,6 +106,55 @@ class StudentAssertpyTest(unittest.TestCase):
         self.temp.addStudentGrade("Angielski", 2)
         assert_that(self.temp.getStudentGrades("Angielski")).is_not_empty()
 
+    def test_get_student_grades_not_existing_lecture(self):
+        assert_that(
+            self.temp.getStudentGrades) \
+            .raises(Exception) \
+            .when_called_with("Matematyka") \
+            .contains("Podany przedmiot nie istnieje!")
+
+    def test_get_student_grades_name_int(self):
+        assert_that(
+            self.temp.getStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with(34) \
+            .contains("Nazwa przedmiotu musi być typu string!")
+
+    def test_get_student_grades_name_float(self):
+        assert_that(
+            self.temp.getStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with(3.5) \
+            .contains("Nazwa przedmiotu musi być typu string!")
+
+    def test_get_student_grades_name_empty_str(self):
+        assert_that(
+            self.temp.getStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with("") \
+            .contains("Nazwa przedmiotu musi być typu string!")
+
+    def test_get_student_grades_name_bool(self):
+        assert_that(
+            self.temp.getStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with(True) \
+            .contains("Nazwa przedmiotu musi być typu string!")
+
+    def test_get_student_grades_name_none(self):
+        assert_that(
+            self.temp.getStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with(None) \
+            .contains("Nazwa przedmiotu musi być typu string!")
+
+    def test_get_student_grades_name_array(self):
+        assert_that(
+            self.temp.getStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with([]) \
+            .contains("Nazwa przedmiotu musi być typu string!")
+
 
 
     def tearDown(self):
