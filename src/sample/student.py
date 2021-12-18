@@ -124,6 +124,10 @@ class Student:
         return f"Usunięto ocenę {grade} z przedmiotu {name}"
 
     def getStudentGrades(self, name):
+        if type(name) != str or name == "":
+            raise ValueError("Nazwa przedmiotu musi być typu string!")
+        elif name not in self.lectures:
+            raise Exception("Podany przedmiot nie istnieje!")
         return self.lectures[name]
 
 
