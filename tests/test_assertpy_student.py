@@ -1,6 +1,7 @@
 import unittest
 from assertpy import *
 from src.sample.student import Student
+import re
 
 
 class StudentAssertpyTest(unittest.TestCase):
@@ -63,7 +64,7 @@ class StudentAssertpyTest(unittest.TestCase):
     def test_delete_student_grade_correct(self):
         self.temp.addStudentLecture("Matematyka")
         self.temp.addStudentGrade("Matematyka", 5)
-        assert_that(self.temp.deleteStudentGrade("Matematyka", 5))\
+        assert_that(self.temp.deleteStudentGrade("Matematyka", 5)) \
             .is_equal_to("Usunięto ocenę 5 z przedmiotu Matematyka")
 
     def test_delete_student_grade_correct_contains(self):
@@ -155,7 +156,51 @@ class StudentAssertpyTest(unittest.TestCase):
             .when_called_with([]) \
             .contains("Nazwa przedmiotu musi być typu string!")
 
+    def is_formatted_correctly(self):
+        pattern = re.compile("^(0|[1-9]+[0-9]*)\.[0-9]{2}$")
+        if not (bool(pattern.match(str(self.val)))):
+            return self.error(
+                f'Wynik {self.val} nie jest poprawnie sformatowany. Powinien byc liczbą dziesiętną z dwoma '
+                f'miejscami po przecinku!')
+        return self
 
+    add_extension(is_formatted_correctly)
+
+    def is_float(self):
+        if type(self.val) != float:
+            return self.error(
+                f'{self.val} nie jest typu float.')
+        return self
+
+    add_extension(is_float)
+
+    def test_get_student_grade_type(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        self.temp.addStudentGrade("Angielski", 4)
+        assert_that(self.temp.getStudentAverage("Angielski")).is_float()
+
+    def test_get_student_grade_format(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        self.temp.addStudentGrade("Angielski", 4)
+        self.temp.addStudentGrade("Angielski", 5)
+        assert_that(self.temp.getStudentAverage("Angielski")).is_formatted_correctly()
+
+    def test_get_student_grade_correct(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 4)
+        self.temp.addStudentGrade("Angielski", 5)
+        self.temp.addStudentGrade("Angielski", 5)
+        assert_that(self.temp.getStudentAverage("Angielski")).is_close_to(5, 0.4)
+
+    def test_get_student_average_empty_grades(self):
+        self.temp.addStudentLecture("Angielski")
+        assert_that(
+            self.temp.getStudentAverage) \
+            .raises(Exception) \
+            .when_called_with("Angielski") \
+            .contains("Nie dodano żadnych ocen do tego przedmiotu.")
 
     def tearDown(self):
         self.temp = None
