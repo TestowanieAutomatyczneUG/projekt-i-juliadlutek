@@ -123,6 +123,9 @@ class Student:
         self.lectures[name].remove(grade)
         return f"Usunięto ocenę {grade} z przedmiotu {name}"
 
+    def getStudentGrades(self, name):
+        return self.lectures[name]
+
 
 if __name__ == "__main__":
     import doctest
