@@ -77,7 +77,6 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.addStudentGrade("Angielski", 3)
         assert_that(self.temp.getStudentFinalAverage(), greater_than(3))
 
-
     def tearDown(self):
         self.temp = None
 

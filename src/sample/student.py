@@ -140,6 +140,18 @@ class Student:
         result = amount / len(grades)
         return float("%.2f" % result)
 
+    def getStudentFinalAverage(self):
+        if not self.lectures:
+            raise Exception("Nie dodano żadnych przedmiotów do tego ucznia.")
+        amount = 0
+        i = 0
+        for lecture in self.lectures:
+            if self.getStudentGrades(lecture):
+                i += 1
+                amount += self.getStudentAverage(lecture)
+        result = amount / i
+        return float("%.2f" % result)
+
 
 if __name__ == "__main__":
     import doctest
