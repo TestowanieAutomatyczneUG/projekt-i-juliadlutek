@@ -71,6 +71,41 @@ class StudentAssertpyTest(unittest.TestCase):
         self.temp.addStudentGrade("Angielski", 2)
         assert_that(self.temp.deleteStudentGrade("Angielski", 2)).contains("2", "Angielski")
 
+    def test_get_student_grades_empty(self):
+        self.temp.addStudentLecture("Angielski")
+        assert_that(self.temp.getStudentGrades("Angielski")).is_empty()
+
+    def test_get_student_grades_length(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        self.temp.addStudentGrade("Angielski", 4)
+        self.temp.addStudentGrade("Angielski", 5)
+        assert_that(self.temp.getStudentGrades("Angielski")).is_length(3)
+
+    def test_get_student_grades_contains(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        self.temp.addStudentGrade("Angielski", 4)
+        assert_that(self.temp.getStudentGrades("Angielski")).contains(2)
+
+    def test_get_student_grades_not_contains(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        self.temp.addStudentGrade("Angielski", 4)
+        assert_that(self.temp.getStudentGrades("Angielski")).does_not_contain(3)
+
+    def test_get_student_grades_equality(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        self.temp.addStudentGrade("Angielski", 4)
+        self.temp.addStudentGrade("Angielski", 5)
+        assert_that(self.temp.getStudentGrades("Angielski")).is_equal_to([2, 4, 5])
+
+    def test_get_student_grades_not_empty(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        assert_that(self.temp.getStudentGrades("Angielski")).is_not_empty()
+
 
 
     def tearDown(self):
