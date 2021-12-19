@@ -141,6 +141,18 @@ class Student:
         return self.lectures[name]
 
     def editStudentGrade(self, name, grade, newGrade):
+        if type(grade) != int or grade < 1 or grade > 6:
+            raise ValueError("Ocena musi być liczbą cakowitą z przedziau od 1 do 6")
+        if type(newGrade) != int or newGrade < 1 or newGrade > 6:
+            raise ValueError("Nowa ocena musi być liczbą cakowitą z przedziau od 1 do 6")
+        elif type(name) != str or name == "":
+            raise ValueError("Nazwa przedmiotu musi być typu string!")
+        elif name not in self.lectures:
+            raise Exception("Podany przedmiot nie istnieje!")
+        elif grade not in self.lectures[name]:
+            raise Exception("Podana ocena nie istnieje!")
+        elif grade == newGrade:
+            raise Exception("Nowa ocena musi różnić się od starej!")
         self.lectures[name].remove(grade)
         self.lectures[name].append(newGrade)
         return f"Zmieniono ocenę {grade} na ocenę {newGrade}"
