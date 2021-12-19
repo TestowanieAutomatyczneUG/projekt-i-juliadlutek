@@ -248,6 +248,15 @@ class StudentAssertpyTest(unittest.TestCase):
             .when_called_with([]) \
             .contains("Treść uwagi musi być typu string!")
 
+    def test_get_all_student_comments(self):
+        self.temp.addStudentComment("Spóżnienie na lekcję.")
+        self.temp.addStudentComment("Brak pracy domowej.")
+        assert_that(self.temp.getAllStudentComments()).contains_value("Spóżnienie na lekcję.", "Brak pracy domowej.")
+
+    def test_get_all_student_comments_empty(self):
+        assert_that(self.temp.getAllStudentComments()).is_empty()
+
+
     def tearDown(self):
         self.temp = None
 
