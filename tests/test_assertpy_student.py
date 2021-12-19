@@ -280,42 +280,49 @@ class StudentAssertpyTest(unittest.TestCase):
             self.temp.getStudentCommentById) \
             .raises(ValueError) \
             .when_called_with("") \
-            .contains("Treść uwagi musi być typu string!")
+            .contains("Id uwagi musi być dodatnią liczbą całkowitą!")
 
-    def test_get_student_comment_by_id_int(self):
+    def test_get_student_comment_by_id_negative(self):
         assert_that(
             self.temp.getStudentCommentById) \
             .raises(ValueError) \
-            .when_called_with(3) \
-            .contains("Treść uwagi musi być typu string!")
+            .when_called_with(-3) \
+            .contains("Id uwagi musi być dodatnią liczbą całkowitą!")
+
+    def test_get_student_comment_by_id_string(self):
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(ValueError) \
+            .when_called_with("ala") \
+            .contains("Id uwagi musi być dodatnią liczbą całkowitą!")
 
     def test_get_student_comment_by_id_float(self):
         assert_that(
             self.temp.getStudentCommentById) \
             .raises(ValueError) \
             .when_called_with(0.1) \
-            .contains("Treść uwagi musi być typu string!")
+            .contains("Id uwagi musi być dodatnią liczbą całkowitą!")
 
     def test_get_student_comment_by_id_bool(self):
         assert_that(
             self.temp.getStudentCommentById) \
             .raises(ValueError) \
             .when_called_with(True) \
-            .contains("Treść uwagi musi być typu string!")
+            .contains("Id uwagi musi być dodatnią liczbą całkowitą!")
 
     def test_get_student_comment_by_id_none(self):
         assert_that(
             self.temp.getStudentCommentById) \
             .raises(ValueError) \
             .when_called_with(None) \
-            .contains("Treść uwagi musi być typu string!")
+            .contains("Id uwagi musi być dodatnią liczbą całkowitą!")
 
     def test_get_student_comment_by_id_array(self):
         assert_that(
             self.temp.getStudentCommentById) \
             .raises(ValueError) \
             .when_called_with([]) \
-            .contains("Treść uwagi musi być typu string!")
+            .contains("Id uwagi musi być dodatnią liczbą całkowitą!")
 
 
 
