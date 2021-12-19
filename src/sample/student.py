@@ -11,7 +11,7 @@ class Student:
         self.comments = []
 
     def editStudentName(self, name):
-        """Changes the student's
+        """Zmienia imię ucznia
         >>> s = Student("Maria", "Kowalska", 10)
         >>> s.editStudentName("Marysia")
         'Zmieniono imię ucznia na Marysia!'
@@ -48,7 +48,7 @@ class Student:
         return f"Zmieniono imię ucznia na {name}!"
 
     def editStudentSurname(self, surname):
-        """Changes the student's surname
+        """Zmienia nazwisko ucznia
         >>> s = Student("Maria", "Kowalska", 10)
         >>> s.editStudentSurname("Nowak")
         'Zmieniono nazwisko ucznia na Nowak!'
