@@ -258,7 +258,7 @@ class StudentAssertpyTest(unittest.TestCase):
 
     def test_get_student_comment_by_id_correct(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
-        assert_that(self.temp.getStudentCommentById).contains(1, "Spóżnienie na lekcję.")
+        assert_that(self.temp.getStudentCommentById(1)).contains(1, "Spóżnienie na lekcję.")
 
     def test_get_student_comment_by_id_not_existing(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")

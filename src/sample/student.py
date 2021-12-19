@@ -195,7 +195,13 @@ class Student:
             result += str(comment[0]) + ". " + str(comment[1]) + "\n"
         return result
 
-
+    def getStudentCommentById(self, commentId):
+        if type(commentId) != int or commentId <= 0:
+            raise ValueError("Id uwagi musi być dodatnią liczbą całkowitą!")
+        for comment in self.comments:
+            if comment[0] == commentId:
+                return comment
+        raise Exception("Uwaga o podanym id nie istnieje!")
 
 
 if __name__ == "__main__":
