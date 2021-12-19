@@ -140,6 +140,11 @@ class Student:
             raise Exception("Podany przedmiot nie istnieje!")
         return self.lectures[name]
 
+    def editStudentGrade(self, name, grade, newGrade):
+        self.lectures[name].remove(grade)
+        self.lectures[name].append(newGrade)
+        return f"Zmieniono ocenę {grade} na ocenę {newGrade}"
+
     def getStudentAverage(self, name):
         grades = self.getStudentGrades(name)
         if not grades:
