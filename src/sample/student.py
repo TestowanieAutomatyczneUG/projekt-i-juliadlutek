@@ -208,6 +208,14 @@ class Student:
         self.comments.remove(comment)
         return f"Usunięto uwagę \"{comment[1]}\""
 
+    def editStudentCommentById(self, commentId, content):
+        if type(content) != str or content == "":
+            raise ValueError("Treść uwagi musi być typu string!")
+        comment = self.getStudentCommentById(commentId)
+        self.comments.remove(comment)
+        self.comments.append([commentId, content])
+        return f"Zmieniono treść uwagi z \"{comment[1]}\" na \"{content}\""
+
 
 if __name__ == "__main__":
     import doctest

@@ -211,98 +211,112 @@ class StudentPyHamcrestTest(unittest.TestCase):
 
     def test_edit_student_comment_not_existing(self):
         assert_that(
-            self.temp.editStudentCommentById(4, "....."),
+            calling(self.temp.editStudentCommentById)
+            .with_args(4, "....."),
             raises(Exception)
         )
 
     def test_edit_student_comment_id_negative(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(-4, "....."),
+            calling(self.temp.editStudentCommentById)
+            .with_args(-4, "....."),
             raises(ValueError)
         )
 
     def test_edit_student_comment_id_float(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(1.2, "....."),
+            calling(self.temp.editStudentCommentById)
+            .with_args(1.2, "....."),
             raises(ValueError)
         )
 
     def test_edit_student_comment_id_str(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById("ala", "....."),
+            calling(self.temp.editStudentCommentById)
+            .with_args("ala", "....."),
             raises(ValueError)
         )
 
     def test_edit_student_comment_id_empty_str(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById("", "....."),
+            calling(self.temp.editStudentCommentById)
+            .with_args("", "....."),
             raises(ValueError)
         )
 
     def test_edit_student_comment_id_bool(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(False, "....."),
+            calling(self.temp.editStudentCommentById)
+            .with_args(False, "....."),
             raises(ValueError)
         )
 
     def test_edit_student_comment_id_none(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(None, "....."),
+            calling(self.temp.editStudentCommentById)
+            .with_args(None, "....."),
             raises(ValueError)
         )
 
     def test_edit_student_comment_id_array(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById([], "....."),
-            raises(ValueError)
+            calling(self.temp.editStudentCommentById)
+            .with_args([], "....."),
+            raises(ValueError),
         )
 
     def test_edit_student_comment_content_int(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(1, 5),
-            raises(ValueError)
+            calling(self.temp.editStudentCommentById)
+            .with_args(1, 5),
+            raises(ValueError),
         )
 
     def test_edit_student_comment_content_float(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(1, 2.3),
+            calling(self.temp.editStudentCommentById)
+            .with_args(1, 2.3),
             raises(ValueError)
         )
 
     def test_edit_student_comment_content_empty_str(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(1, ""),
+            calling(self.temp.editStudentCommentById)
+            .with_args(1, ""),
             raises(ValueError)
         )
 
     def test_edit_student_comment_content_bool(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(1, False),
+            calling(self.temp.editStudentCommentById)
+            .with_args(1, False),
             raises(ValueError)
         )
 
     def test_edit_student_comment_content_none(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(1, None),
+            calling(self.temp.editStudentCommentById)
+            .with_args(1, None),
             raises(ValueError)
         )
 
     def test_edit_student_comment_content_array(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
-            self.temp.editStudentCommentById(1, []),
+            calling(self.temp.editStudentCommentById)
+            .with_args(1, []),
             raises(ValueError)
         )
 
