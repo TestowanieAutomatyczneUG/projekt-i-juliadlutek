@@ -256,6 +256,69 @@ class StudentAssertpyTest(unittest.TestCase):
     def test_get_all_student_comments_empty(self):
         assert_that(self.temp.getAllStudentComments()).is_empty()
 
+    def test_get_student_comment_by_id_correct(self):
+        self.temp.addStudentComment("Spóżnienie na lekcję.")
+        assert_that(self.temp.getStudentCommentById).contains(1, "Spóżnienie na lekcję.")
+
+    def test_get_student_comment_by_id_not_existing(self):
+        self.temp.addStudentComment("Spóżnienie na lekcję.")
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(Exception) \
+            .when_called_with(2) \
+            .contains("Uwaga o podanym id nie istnieje!")
+
+    def test_get_student_comment_by_id_empty_comments(self):
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(Exception) \
+            .when_called_with(1) \
+            .contains("Uwaga o podanym id nie istnieje!")
+
+    def test_get_student_comment_by_id_empty_str(self):
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(ValueError) \
+            .when_called_with("") \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_get_student_comment_by_id_int(self):
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(ValueError) \
+            .when_called_with(3) \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_get_student_comment_by_id_float(self):
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(ValueError) \
+            .when_called_with(0.1) \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_get_student_comment_by_id_bool(self):
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(ValueError) \
+            .when_called_with(True) \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_get_student_comment_by_id_none(self):
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(ValueError) \
+            .when_called_with(None) \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_get_student_comment_by_id_array(self):
+        assert_that(
+            self.temp.getStudentCommentById) \
+            .raises(ValueError) \
+            .when_called_with([]) \
+            .contains("Treść uwagi musi być typu string!")
+
+
+
 
     def tearDown(self):
         self.temp = None

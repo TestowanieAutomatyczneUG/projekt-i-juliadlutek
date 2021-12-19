@@ -192,7 +192,7 @@ class Student:
     def getAllStudentComments(self):
         result = ""
         for comment in self.comments:
-            result += str(comment[0]) + ". " + str(comment[1])
+            result += str(comment[0]) + ". " + str(comment[1]) + "\n"
         return result
 
 
