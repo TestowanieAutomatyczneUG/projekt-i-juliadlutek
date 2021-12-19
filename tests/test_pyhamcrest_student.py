@@ -77,6 +77,19 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.addStudentGrade("Angielski", 3)
         assert_that(self.temp.getStudentFinalAverage(), greater_than(3))
 
+    def test_edit_student_lecture_name_correct(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(self.temp.editStudentLectureName("matematyka", "Matematyka"),
+                    equal_to("Zmieniono nazwę przedmiotu matematyka na Matematyka."))
+
+    def test_edit_student_lecture_name_correct_grades(self):
+        self.temp.addStudentLecture("matematyka")
+        self.temp.addStudentGrade("matematyka", 5)
+        self.temp.addStudentGrade("matematyka", 4)
+        self.temp.editStudentLectureName("matematyka", "Matematyka")
+        assert_that(self.temp.getStudentGrades("Matematyka"),
+                    contains_inanyorder(4, 5))
+
     def tearDown(self):
         self.temp = None
 
