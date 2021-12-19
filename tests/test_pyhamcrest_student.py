@@ -90,6 +90,57 @@ class StudentPyHamcrestTest(unittest.TestCase):
         assert_that(self.temp.getStudentGrades("Matematyka"),
                     contains_inanyorder(4, 5))
 
+    def test_edit_student_lecture_not_existing(self):
+        assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", "Matematyka"), raises(Exception))
+
+    def test_edit_student_lecture_name_empty_str(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args("", "Matematyka"), raises(ValueError))
+
+    def test_edit_student_lecture_name_int(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args(-2, "Matematyka"), raises(ValueError))
+
+    def test_edit_student_lecture_name_float(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args(1.3, "Matematyka"), raises(ValueError))
+
+    def test_edit_student_lecture_name_array(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args([], "Matematyka"), raises(ValueError))
+
+    def test_edit_student_lecture_name_bool(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args(True, "Matematyka"), raises(ValueError))
+
+    def test_edit_student_lecture_name_none(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args(None, "Matematyka"), raises(ValueError))
+
+    def test_edit_student_lecture_new_name_empty_str(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", ""), raises(ValueError))
+
+    def test_edit_student_lecture_new_name_int(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", 12), raises(ValueError))
+
+    def test_edit_student_lecture_new_name_float(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", 12.2), raises(ValueError))
+
+    def test_edit_student_lecture_new_name_array(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", []), raises(ValueError))
+
+    def test_edit_student_lecture_new_name_bool(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", False), raises(ValueError))
+
+    def test_edit_student_lecture_new_name_none(self):
+        self.temp.addStudentLecture("matematyka")
+        assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", None), raises(ValueError))
+
     def tearDown(self):
         self.temp = None
 
