@@ -1,3 +1,5 @@
+from itertools import count
+
 class Student:
     def __init__(self, name, surname, studentId):
         if type(name) != str or len(name) == 0:
@@ -9,6 +11,7 @@ class Student:
         self.surname = surname
         self.lectures = {}
         self.comments = []
+        self.__comment_id = count(1, 1)
 
     def editStudentName(self, name):
         """Zmienia imię ucznia
@@ -178,6 +181,13 @@ class Student:
                 amount += self.getStudentAverage(lecture)
         result = amount / i
         return float("%.2f" % result)
+
+    def addStudentComment(self, content):
+        if type(content) != str or content == "":
+            raise ValueError("Treść uwagi musi być typu string!")
+        commentId = next(self.__comment_id)
+        self.comments.append([commentId, content])
+        return f"Dodano uwagę: {commentId}. {content}"
 
 
 if __name__ == "__main__":
