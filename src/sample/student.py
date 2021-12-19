@@ -111,6 +111,10 @@ class Student:
         self.lectures[name].append(grade)
         return f"Dodano ocenę {grade} do przedmiotu {name}"
 
+    def editStudentLectureName(self, name, newName):
+        self.lectures[newName] = self.lectures.pop(name)
+        return f"Zmieniono nazwę przedmiotu {name} na {newName}."
+
     def deleteStudentGrade(self, name, grade):
         if type(grade) != int or grade < 1 or grade > 6:
             raise ValueError("Ocena musi być liczbą cakowitą z przedziau od 1 do 6")
