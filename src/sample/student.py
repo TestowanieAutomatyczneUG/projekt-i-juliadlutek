@@ -189,6 +189,12 @@ class Student:
         self.comments.append([commentId, content])
         return f"Dodano uwagę: {commentId}. {content}"
 
+    def getAllStudentComments(self):
+        result = ""
+        for comment in self.comments:
+            result += str(comment[0]) + ". " + str(comment[1])
+        return result
+
 
 if __name__ == "__main__":
     import doctest
