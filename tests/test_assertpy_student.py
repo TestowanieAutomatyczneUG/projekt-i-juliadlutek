@@ -202,6 +202,52 @@ class StudentAssertpyTest(unittest.TestCase):
             .when_called_with("Angielski") \
             .contains("Nie dodano żadnych ocen do tego przedmiotu.")
 
+    def test_add_student_comment_correct(self):
+        assert_that(self.temp.addStudentComment("Spóźnienie na lekcję."))\
+            .is_equal_to("Dodano uwagę: 1. Spóźnienie na lekcję.")
+
+    def test_add_student_comment_content_empty(self):
+        assert_that(
+            self.temp.addStudentComment) \
+            .raises(ValueError) \
+            .when_called_with("") \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_add_student_comment_content_int(self):
+        assert_that(
+            self.temp.addStudentComment) \
+            .raises(ValueError) \
+            .when_called_with(2) \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_add_student_comment_content_float(self):
+        assert_that(
+            self.temp.addStudentComment) \
+            .raises(ValueError) \
+            .when_called_with(2.3) \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_add_student_comment_content_none(self):
+        assert_that(
+            self.temp.addStudentComment) \
+            .raises(ValueError) \
+            .when_called_with(None) \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_add_student_comment_content_true(self):
+        assert_that(
+            self.temp.addStudentComment) \
+            .raises(ValueError) \
+            .when_called_with(True) \
+            .contains("Treść uwagi musi być typu string!")
+
+    def test_add_student_comment_content_array(self):
+        assert_that(
+            self.temp.addStudentComment) \
+            .raises(ValueError) \
+            .when_called_with([]) \
+            .contains("Treść uwagi musi być typu string!")
+
     def tearDown(self):
         self.temp = None
 
