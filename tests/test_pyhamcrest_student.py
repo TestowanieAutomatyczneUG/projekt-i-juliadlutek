@@ -141,6 +141,27 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.addStudentLecture("matematyka")
         assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", None), raises(ValueError))
 
+    def test_edit_student_grade_correct_output(self):
+        self.temp.addStudentLecture("Matematyka")
+        self.temp.addStudentGrade("Matematyka", 5)
+        assert_that(self.temp.editStudentGrade("Matematyka", 5, 4), equal_to("Zmieniono ocenę 5 na ocenę 4"))
+
+    def test_edit_student_grade_correct(self):
+        self.temp.addStudentLecture("Matematyka")
+        self.temp.addStudentGrade("Matematyka", 5)
+        self.temp.addStudentGrade("Matematyka", 4)
+        self.temp.addStudentGrade("Matematyka", 3)
+        self.temp.editStudentGrade("Matematyka", 3, 5)
+        assert_that(self.temp.getStudentGrades("Matematyka"), is_not(contains_exactly(3)))
+
+    def test_only_one_student_grade(self):
+        self.temp.addStudentLecture("Matematyka")
+        self.temp.addStudentGrade("Matematyka", 5)
+        self.temp.addStudentGrade("Matematyka", 5)
+        self.temp.addStudentGrade("Matematyka", 5)
+        self.temp.editStudentGrade("Matematyka", 5, 4)
+        assert_that(self.temp.getStudentGrades("Matematyka"), contains_inanyorder(5, 5, 4))
+
     def tearDown(self):
         self.temp = None
 
