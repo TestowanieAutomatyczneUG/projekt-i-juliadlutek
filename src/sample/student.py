@@ -203,6 +203,11 @@ class Student:
                 return comment
         raise Exception("Uwaga o podanym id nie istnieje!")
 
+    def deleteStudentCommentById(self, commentId):
+        comment = self.getStudentCommentById(commentId)
+        self.comments.remove(comment)
+        return f"Usunięto uwagę \"{comment[1]}\""
+
 
 if __name__ == "__main__":
     import doctest

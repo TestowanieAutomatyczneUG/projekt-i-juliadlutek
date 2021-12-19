@@ -164,33 +164,33 @@ class StudentPyHamcrestTest(unittest.TestCase):
 
     def test_delete_student_comment_correct(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
-        assert_that(self.temp.deleteStudentComment(1), equal_to("Usunięto uwagę \"Spóżnienie na lekcję.\""))
+        assert_that(self.temp.deleteStudentCommentById(1), equal_to("Usunięto uwagę \"Spóżnienie na lekcję.\""))
 
     def test_delete_student_comment_not_existing(self):
-        assert_that(calling(self.temp.deleteStudentComment).with_args(3), raises(Exception))
+        assert_that(calling(self.temp.deleteStudentCommentById).with_args(3), raises(Exception))
 
     def test_delete_student_comment_str(self):
-        assert_that(calling(self.temp.deleteStudentComment).with_args("ala"), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentCommentById).with_args("ala"), raises(ValueError))
 
     def test_delete_student_comment_empty_str(self):
-        assert_that(calling(self.temp.deleteStudentComment).with_args(""), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentCommentById).with_args(""), raises(ValueError))
 
     def test_delete_student_comment_float(self):
-        assert_that(calling(self.temp.deleteStudentComment).with_args(2.3), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentCommentById).with_args(2.3), raises(ValueError))
 
     def test_delete_student_comment_bool(self):
-        assert_that(calling(self.temp.deleteStudentComment).with_args(True), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentCommentById).with_args(True), raises(ValueError))
 
     def test_delete_student_comment_none(self):
-        assert_that(calling(self.temp.deleteStudentComment).with_args(None), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentCommentById).with_args(None), raises(ValueError))
 
     def test_delete_student_comment_array(self):
-        assert_that(calling(self.temp.deleteStudentComment).with_args([]), raises(ValueError))
+        assert_that(calling(self.temp.deleteStudentCommentById).with_args([]), raises(ValueError))
 
     def test_delete_student_comment_correct_list(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         self.temp.addStudentComment("Brak pracy domowej.")
-        self.temp.deleteStudentComment(2)
+        self.temp.deleteStudentCommentById(2)
         assert_that(self.temp.getAllStudentComments(), is_not(contains_string("Brak pracy domowej.")))
 
     def tearDown(self):
