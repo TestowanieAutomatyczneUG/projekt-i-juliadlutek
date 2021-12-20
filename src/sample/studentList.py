@@ -41,11 +41,13 @@ class StudentList:
         del student
 
     def writeToCsv(self, dirName):
+        if type(dirName) != str or dirName == "":
+            raise ValueError("Nazwa pliku musi być typu string!")
         header = ['Id', 'Imię', 'Nazwisko', 'Średnia']
         try:
             os.mkdir(f"./{dirName}")
         except OSError as e:
-            print("Directory exists")
+            print("Podany katalog już istnieje")
         with open(f"./{dirName}/studentList.csv", 'w', encoding='UTF8') as f:
             writer = csv.writer(f)
             writer.writerow(header)

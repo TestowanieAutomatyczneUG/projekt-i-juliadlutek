@@ -2,6 +2,7 @@ import unittest
 from assertpy import *
 from src.sample.studentList import StudentList
 from src.sample.student import Student
+import csv
 
 
 class StudentListAssertpyTest(unittest.TestCase):
@@ -94,6 +95,87 @@ class StudentListAssertpyTest(unittest.TestCase):
             .raises(ValueError) \
             .when_called_with("Maria", 0.1) \
             .contains("Nazwisko ucznia musi być typu string!")
+
+    def test_write_to_csv_correct_output(self):
+        self.temp.addStudent("Maria", "Kowalska")
+        self.temp.addStudent("Jan", "Nowak")
+        maria = self.temp.getStudentById(1)
+        maria.addStudentLecture("Matematyka")
+        maria.addStudentGrade("Matematyka", 5)
+        maria.addStudentGrade("Matematyka", 3)
+        maria.addStudentLecture("Angielski")
+        maria.addStudentGrade("Angielski", 5)
+        assert_that(self.temp.writeToCsv('testCsv')).is_equal_to("Zapisano dane do pliku csv!")
+
+    def test_write_to_csv_correct_header(self):
+        csvFile = open('testCsv/studentList.csv')
+        csvreader = csv.reader(csvFile)
+        header = next(csvreader)
+        assert_that(header).contains("Id","Imię","Nazwisko","Średnia")
+
+    def test_write_to_csv_correct_records(self):
+        csvFile = open('testCsv/studentList.csv')
+        csvreader = csv.reader(csvFile)
+        rows = []
+        for row in csvreader:
+            for el in row:
+                rows.append(el)
+        assert_that(rows).contains('1', 'Maria', 'Kowalska', '4.5', '2', 'Jan', 'Nowak', 'Brak')
+
+    def test_write_to_csv_any_student(self):
+        self.temp.writeToCsv('testCsv')
+        csvFile = open('testCsv/studentList.csv')
+        csvreader = csv.reader(csvFile)
+        rows = []
+        header = next(csvreader)
+        for row in csvreader:
+            if row != header:
+                for el in row:
+                    rows.append(el)
+        assert_that(rows).is_empty()
+
+    def test_add_to_csv_dir_empty_str(self):
+        assert_that(
+            self.temp.writeToCsv) \
+            .raises(ValueError) \
+            .when_called_with("") \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_add_to_csv_dir_int(self):
+        assert_that(
+            self.temp.writeToCsv) \
+            .raises(ValueError) \
+            .when_called_with(3) \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_add_to_csv_dir_float(self):
+        assert_that(
+            self.temp.writeToCsv) \
+            .raises(ValueError) \
+            .when_called_with(-1.4) \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_add_to_csv_dir_bool(self):
+        assert_that(
+            self.temp.writeToCsv) \
+            .raises(ValueError) \
+            .when_called_with(False) \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_add_to_csv_dir_none(self):
+        assert_that(
+            self.temp.writeToCsv) \
+            .raises(ValueError) \
+            .when_called_with(None) \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_add_to_csv_dir_array(self):
+        assert_that(
+            self.temp.writeToCsv) \
+            .raises(ValueError) \
+            .when_called_with([]) \
+            .contains("Nazwa pliku musi być typu string!")
+
 
     def tearDown(self):
         self.temp = None
