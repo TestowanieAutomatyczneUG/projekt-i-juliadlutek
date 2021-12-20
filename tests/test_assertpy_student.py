@@ -195,6 +195,20 @@ class StudentAssertpyTest(unittest.TestCase):
         self.temp.addStudentGrade("Angielski", 5)
         assert_that(self.temp.getStudentAverage("Angielski")).is_close_to(5, 0.4)
 
+    def test_get_student_grade_correct2(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 4)
+        self.temp.addStudentGrade("Angielski", 5)
+        self.temp.addStudentGrade("Angielski", 5)
+        assert_that(self.temp.getStudentAverage("Angielski")).is_between(4.5, 5)
+
+    def test_get_student_grade_correct3(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 4)
+        self.temp.addStudentGrade("Angielski", 5)
+        self.temp.addStudentGrade("Angielski", 5)
+        assert_that(self.temp.getStudentAverage("Angielski")).is_less_than(4.7)
+
     def test_get_student_average_empty_grades(self):
         self.temp.addStudentLecture("Angielski")
         assert_that(
