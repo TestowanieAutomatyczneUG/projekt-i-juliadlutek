@@ -232,8 +232,20 @@ class Student:
             if not self.lectures:
                 raise Exception("Nie dodano żadnych przedmiotów do tego ucznia.")
             for lecture in self.lectures:
-                data = [lecture, self.getStudentGrades(lecture), self.getStudentAverage(lecture)]
-                writer.writerow(data)
+                if not self.getStudentGrades(lecture):
+                    data = [lecture, "Brak", "Brak"]
+                    writer.writerow(data)
+                else:
+                    data = [lecture, self.getStudentGrades(lecture), self.getStudentAverage(lecture)]
+                    writer.writerow(data)
+            # data =
+            # for student in self.students:
+            #     if student.lectures:
+            #         data = [student.id, student.name, student.surname, student.getStudentFinalAverage()]
+            #         writer.writerow(data)
+            #     else:
+            #         data = [student.id, student.name, student.surname, "Brak"]
+            #         writer.writerow(data)
         return "Zapisano dane do pliku csv!"
 
 

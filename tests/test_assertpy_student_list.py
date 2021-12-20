@@ -134,42 +134,42 @@ class StudentListAssertpyTest(unittest.TestCase):
                     rows.append(el)
         assert_that(rows).is_empty()
 
-    def test_add_to_csv_dir_empty_str(self):
+    def test_write_to_csv_dir_empty_str(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with("") \
             .contains("Nazwa pliku musi być typu string!")
 
-    def test_add_to_csv_dir_int(self):
+    def test_write_to_csv_dir_int(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with(3) \
             .contains("Nazwa pliku musi być typu string!")
 
-    def test_add_to_csv_dir_float(self):
+    def test_write_to_csv_dir_float(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with(-1.4) \
             .contains("Nazwa pliku musi być typu string!")
 
-    def test_add_to_csv_dir_bool(self):
+    def test_write_to_csv_dir_bool(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with(False) \
             .contains("Nazwa pliku musi być typu string!")
 
-    def test_add_to_csv_dir_none(self):
+    def test_write_to_csv_dir_none(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with(None) \
             .contains("Nazwa pliku musi być typu string!")
 
-    def test_add_to_csv_dir_array(self):
+    def test_write_to_csv_dir_array(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \

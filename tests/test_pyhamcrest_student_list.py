@@ -88,10 +88,6 @@ class StudentListPyHamcrestTest(unittest.TestCase):
     def test_delete_student_by_negative_number(self):
         assert_that(calling(self.temp.deleteStudentById).with_args(-2), raises(ValueError))
 
-
-
-
-
     def tearDown(self):
         self.temp = None
 

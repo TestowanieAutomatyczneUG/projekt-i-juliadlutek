@@ -2,6 +2,7 @@ import unittest
 from assertpy import *
 from src.sample.student import Student
 import re
+import csv
 
 
 class StudentAssertpyTest(unittest.TestCase):
@@ -323,6 +324,100 @@ class StudentAssertpyTest(unittest.TestCase):
             .raises(ValueError) \
             .when_called_with([]) \
             .contains("Id uwagi musi być dodatnią liczbą całkowitą!")
+
+    def test_write_to_csv_grades_correct_ouput(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        self.temp.addStudentGrade("Angielski", 4)
+        self.temp.addStudentGrade("Angielski", 5)
+        self.temp.addStudentLecture("Matematyka")
+        self.temp.addStudentGrade("Matematyka", 5)
+        self.temp.addStudentGrade("Matematyka", 5)
+        self.temp.addStudentGrade("Matematyka", 3)
+        assert_that(self.temp.writeToCsvStudentGrades('testCsv')).is_equal_to("Zapisano dane do pliku csv!")
+
+    def test_write_to_csv_grades_correct_header(self):
+        csvFile = open('testCsv/student10grades.csv')
+        csvreader = csv.reader(csvFile)
+        header = next(csvreader)
+        assert_that(header).contains("Przedmiot","Oceny","Średnia")
+
+    def test_write_to_csv_grades_records(self):
+        csvFile = open('testCsv/student10grades.csv')
+        csvreader = csv.reader(csvFile)
+        rows = []
+        for row in csvreader:
+            for el in row:
+                rows.append(el)
+        assert_that(rows).contains('Angielski', '[2, 4, 5]', '3.67', 'Matematyka', '[5, 5, 3]', '4.33')
+
+    def test_write_to_csv_grades_with_any_lectures(self):
+        assert_that(
+            self.temp.writeToCsvStudentGrades) \
+            .raises(Exception) \
+            .when_called_with('testCsv') \
+            .contains("Nie dodano żadnych przedmiotów do tego ucznia.")
+
+    def test_write_to_csv_grades_with_any_grades(self):
+        self.temp.addStudentLecture("Angielski")
+        self.temp.addStudentGrade("Angielski", 2)
+        self.temp.addStudentGrade("Angielski", 4)
+        self.temp.addStudentGrade("Angielski", 5)
+        self.temp.addStudentLecture("Matematyka")
+        self.temp.writeToCsvStudentGrades('testCsv')
+        csvFile = open('testCsv/student10grades.csv')
+        csvreader = csv.reader(csvFile)
+        rows = []
+        for row in csvreader:
+            for el in row:
+                rows.append(el)
+        assert_that(rows).contains('Angielski', '[2, 4, 5]', '3.67', 'Matematyka', 'Brak', 'Brak')
+
+    def test_write_to_csv_grades_dir_empty_str(self):
+        assert_that(
+            self.temp.writeToCsvStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with("") \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_write_to_csv_grades_dir_int(self):
+        assert_that(
+            self.temp.writeToCsvStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with(3) \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_write_to_csv_grades_dir_float(self):
+        assert_that(
+            self.temp.writeToCsvStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with(-1.4) \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_write_to_csv_grades_dir_bool(self):
+        assert_that(
+            self.temp.writeToCsvStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with(False) \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_write_to_csv_grades_dir_none(self):
+        assert_that(
+            self.temp.writeToCsvStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with(None) \
+            .contains("Nazwa pliku musi być typu string!")
+
+    def test_write_to_csv_grades_dir_array(self):
+        assert_that(
+            self.temp.writeToCsvStudentGrades) \
+            .raises(ValueError) \
+            .when_called_with([]) \
+            .contains("Nazwa pliku musi być typu string!")
+
+
+
+
 
 
 
