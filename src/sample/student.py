@@ -1,4 +1,6 @@
 from itertools import count
+import os
+import csv
 
 class Student:
     def __init__(self, name, surname, studentId):
@@ -116,7 +118,7 @@ class Student:
 
     def addStudentGrade(self, name, grade):
         if type(grade) != int or grade < 1 or grade > 6:
-            raise ValueError("Ocena musi być liczbą cakowitą z przedziau od 1 do 6")
+            raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
         elif type(name) != str or name == "":
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
@@ -126,7 +128,7 @@ class Student:
 
     def deleteStudentGrade(self, name, grade):
         if type(grade) != int or grade < 1 or grade > 6:
-            raise ValueError("Ocena musi być liczbą cakowitą z przedziau od 1 do 6")
+            raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
         elif type(name) != str or name == "":
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
@@ -145,9 +147,9 @@ class Student:
 
     def editStudentGrade(self, name, grade, newGrade):
         if type(grade) != int or grade < 1 or grade > 6:
-            raise ValueError("Ocena musi być liczbą cakowitą z przedziau od 1 do 6")
+            raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
         if type(newGrade) != int or newGrade < 1 or newGrade > 6:
-            raise ValueError("Nowa ocena musi być liczbą cakowitą z przedziau od 1 do 6")
+            raise ValueError("Nowa ocena musi być liczbą cakowitą z przedziału od 1 do 6")
         elif type(name) != str or name == "":
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
@@ -215,6 +217,24 @@ class Student:
         self.comments.remove(comment)
         self.comments.append([commentId, content])
         return f"Zmieniono treść uwagi z \"{comment[1]}\" na \"{content}\""
+
+    def writeToCsvStudentGrades(self, dirName):
+        if type(dirName) != str or dirName == "":
+            raise ValueError("Nazwa pliku musi być typu string!")
+        header = ['Przedmiot', 'Oceny', 'Średnia']
+        try:
+            os.mkdir(f"./{dirName}")
+        except OSError as e:
+            pass
+        with open(f"./{dirName}/student{self.id}grades.csv", 'w', encoding='UTF8') as f:
+            writer = csv.writer(f)
+            writer.writerow(header)
+            if not self.lectures:
+                raise Exception("Nie dodano żadnych przedmiotów do tego ucznia.")
+            for lecture in self.lectures:
+                data = [lecture, self.getStudentGrades(lecture), self.getStudentAverage(lecture)]
+                writer.writerow(data)
+        return "Zapisano dane do pliku csv!"
 
 
 if __name__ == "__main__":
