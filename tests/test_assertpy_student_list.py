@@ -1,8 +1,8 @@
 import unittest
 from assertpy import *
 from src.sample.studentList import StudentList
-from src.sample.student import Student
 import csv
+from os.path import exists
 
 
 class StudentListAssertpyTest(unittest.TestCase):
@@ -10,7 +10,7 @@ class StudentListAssertpyTest(unittest.TestCase):
         self.temp = StudentList()
 
     def test_add_student(self):
-        assert_that(self.temp.addStudent("Maria", "Kowalska"), "Dodano nowego ucznia: Maria Kowalska")
+        assert_that(self.temp.addStudent("Maria", "Kowalska")).is_equal_to("Dodano nowego ucznia: Maria Kowalska")
 
     def test_add_student_number_name(self):
         assert_that(
@@ -108,23 +108,27 @@ class StudentListAssertpyTest(unittest.TestCase):
         assert_that(self.temp.writeToCsvStudentList('testCsv')).is_equal_to("Zapisano dane do pliku csv!")
 
     def test_write_to_csv_correct_header(self):
-        csvFile = open('testCsv/studentList.csv')
-        csvreader = csv.reader(csvFile)
-        header = next(csvreader)
-        assert_that(header).contains("Id","Imię","Nazwisko","Średnia")
+        if exists('./testCsv/studentList.csv'):
+            csvFile = open('./testCsv/studentList.csv')
+            csvreader = csv.reader(csvFile)
+            header = next(csvreader)
+            assert_that(header).contains("Id", "Imię", "Nazwisko", "Średnia")
+        pass
 
     def test_write_to_csv_correct_records(self):
-        csvFile = open('testCsv/studentList.csv')
-        csvreader = csv.reader(csvFile)
-        rows = []
-        for row in csvreader:
-            for el in row:
-                rows.append(el)
-        assert_that(rows).contains('1', 'Maria', 'Kowalska', '4.5', '2', 'Jan', 'Nowak', 'Brak')
+        if exists('./testCsv/studentList.csv'):
+            csvFile = open('./testCsv/studentList.csv')
+            csvreader = csv.reader(csvFile)
+            rows = []
+            for row in csvreader:
+                for el in row:
+                    rows.append(el)
+            assert_that(rows).contains('1', 'Maria', 'Kowalska', '4.5', '2', 'Jan', 'Nowak', 'Brak')
+        pass
 
     def test_write_to_csv_any_student(self):
         self.temp.writeToCsvStudentList('testCsv')
-        csvFile = open('testCsv/studentList.csv')
+        csvFile = open('./testCsv/studentList.csv')
         csvreader = csv.reader(csvFile)
         rows = []
         header = next(csvreader)
@@ -175,7 +179,6 @@ class StudentListAssertpyTest(unittest.TestCase):
             .raises(ValueError) \
             .when_called_with([]) \
             .contains("Nazwa pliku musi być typu string!")
-
 
     def tearDown(self):
         self.temp = None

@@ -41,7 +41,7 @@ class StudentList:
         del student
 
     def writeToCsvStudentList(self, dirName):
-        if type(dirName) != str or dirName == "":
+        if type(dirName) != str or not dirName:
             raise ValueError("Nazwa pliku musi być typu string!")
         header = ['Id', 'Imię', 'Nazwisko', 'Średnia']
         try:

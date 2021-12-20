@@ -3,6 +3,7 @@ from assertpy import *
 from src.sample.student import Student
 import re
 import csv
+from os.path import exists
 
 
 class StudentAssertpyTest(unittest.TestCase):
@@ -10,7 +11,7 @@ class StudentAssertpyTest(unittest.TestCase):
         self.temp = Student("Jan", "Nowak", 10)
 
     def test_add_student_lecture(self):
-        assert_that(self.temp.addStudentLecture("Matematyka"), "Dodano nowy przedmiot - Matematyka!")
+        assert_that(self.temp.addStudentLecture("Matematyka")).is_equal_to("Dodano nowy przedmiot - Matematyka!")
 
     def test_add_student_repeat_lecture(self):
         self.temp.addStudentLecture("Matematyka")
@@ -218,7 +219,7 @@ class StudentAssertpyTest(unittest.TestCase):
             .contains("Nie dodano żadnych ocen do tego przedmiotu.")
 
     def test_add_student_comment_correct(self):
-        assert_that(self.temp.addStudentComment("Spóźnienie na lekcję."))\
+        assert_that(self.temp.addStudentComment("Spóźnienie na lekcję.")) \
             .is_equal_to("Dodano uwagę: 1. Spóźnienie na lekcję.")
 
     def test_add_student_comment_content_empty(self):
@@ -351,19 +352,23 @@ class StudentAssertpyTest(unittest.TestCase):
         assert_that(self.temp.writeToCsvStudentGrades('testCsv')).is_equal_to("Zapisano dane do pliku csv!")
 
     def test_write_to_csv_grades_correct_header(self):
-        csvFile = open('testCsv/student10grades.csv')
-        csvreader = csv.reader(csvFile)
-        header = next(csvreader)
-        assert_that(header).contains("Przedmiot","Oceny","Średnia")
+        if exists('./testCsv/studentList.csv'):
+            csvFile = open('./testCsv/student10grades.csv')
+            csvreader = csv.reader(csvFile)
+            header = next(csvreader)
+            assert_that(header).contains("Przedmiot", "Oceny", "Średnia")
+        pass
 
     def test_write_to_csv_grades_records(self):
-        csvFile = open('testCsv/student10grades.csv')
-        csvreader = csv.reader(csvFile)
-        rows = []
-        for row in csvreader:
-            for el in row:
-                rows.append(el)
-        assert_that(rows).contains('Angielski', '[2, 4, 5]', '3.67', 'Matematyka', '[5, 5, 3]', '4.33')
+        if exists('./testCsv/studentList.csv'):
+            csvFile = open('./testCsv/student10grades.csv')
+            csvreader = csv.reader(csvFile)
+            rows = []
+            for row in csvreader:
+                for el in row:
+                    rows.append(el)
+            assert_that(rows).contains('Angielski', '[2, 4, 5]', '3.67', 'Matematyka', '[5, 5, 3]', '4.33')
+        pass
 
     def test_write_to_csv_grades_with_any_lectures(self):
         assert_that(
@@ -428,13 +433,6 @@ class StudentAssertpyTest(unittest.TestCase):
             .raises(ValueError) \
             .when_called_with([]) \
             .contains("Nazwa pliku musi być typu string!")
-
-
-
-
-
-
-
 
     def tearDown(self):
         self.temp = None

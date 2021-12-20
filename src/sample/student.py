@@ -2,6 +2,7 @@ from itertools import count
 import os
 import csv
 
+
 class Student:
     def __init__(self, name, surname, studentId):
         if type(name) != str or len(name) == 0:
@@ -85,13 +86,13 @@ class Student:
 
         if type(surname) != str:
             raise ValueError("Nazwisko ucznia musi być typu string!")
-        elif len(surname) == 0:
+        elif not surname:
             raise ValueError("Nazwisko ucznia nie może być puste!")
         self.surname = surname
         return f"Zmieniono nazwisko ucznia na {surname}!"
 
     def addStudentLecture(self, name):
-        if type(name) != str or name == '':
+        if type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
             self.lectures[name] = []
@@ -99,7 +100,7 @@ class Student:
         raise Exception("Podany przedmiot już istnieje!")
 
     def deleteStudentLecture(self, name):
-        if type(name) != str or name == '':
+        if type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
             raise Exception("Podany przedmiot nie istnieje!")
@@ -107,9 +108,9 @@ class Student:
         return f"Usunięto przedmiot - {name}!"
 
     def editStudentLectureName(self, name, newName):
-        if type(name) != str or name == '':
+        if type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
-        if type(newName) != str or newName == '':
+        elif type(newName) != str or not newName:
             raise ValueError("Nowa nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
             raise Exception("Podany przedmiot nie istnieje!")
@@ -119,7 +120,7 @@ class Student:
     def addStudentGrade(self, name, grade):
         if type(grade) != int or grade < 1 or grade > 6:
             raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
-        elif type(name) != str or name == "":
+        elif type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
             raise Exception("Podany przedmiot nie istnieje!")
@@ -129,7 +130,7 @@ class Student:
     def deleteStudentGrade(self, name, grade):
         if type(grade) != int or grade < 1 or grade > 6:
             raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
-        elif type(name) != str or name == "":
+        elif type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
             raise Exception("Podany przedmiot nie istnieje!")
@@ -139,7 +140,7 @@ class Student:
         return f"Usunięto ocenę {grade} z przedmiotu {name}"
 
     def getStudentGrades(self, name):
-        if type(name) != str or name == "":
+        if type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
             raise Exception("Podany przedmiot nie istnieje!")
@@ -148,9 +149,9 @@ class Student:
     def editStudentGrade(self, name, grade, newGrade):
         if type(grade) != int or grade < 1 or grade > 6:
             raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
-        if type(newGrade) != int or newGrade < 1 or newGrade > 6:
+        elif type(newGrade) != int or newGrade < 1 or newGrade > 6:
             raise ValueError("Nowa ocena musi być liczbą cakowitą z przedziału od 1 do 6")
-        elif type(name) != str or name == "":
+        elif type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
         elif name not in self.lectures:
             raise Exception("Podany przedmiot nie istnieje!")
@@ -169,8 +170,8 @@ class Student:
         amount = 0
         for grade in grades:
             amount += grade
-        result = amount / len(grades)
-        return float("%.2f" % result)
+        result = float("%.2f" % (amount / len(grades)))
+        return result
 
     def getStudentFinalAverage(self):
         if not self.lectures:
@@ -181,11 +182,11 @@ class Student:
             if self.getStudentGrades(lecture):
                 i += 1
                 amount += self.getStudentAverage(lecture)
-        result = amount / i
-        return float("%.2f" % result)
+        result = float("%.2f" %(amount / i))
+        return result
 
     def addStudentComment(self, content):
-        if type(content) != str or content == "":
+        if type(content) != str or not content:
             raise ValueError("Treść uwagi musi być typu string!")
         commentId = next(self.__comment_id)
         self.comments.append([commentId, content])
@@ -211,7 +212,7 @@ class Student:
         return f"Usunięto uwagę \"{comment[1]}\""
 
     def editStudentCommentById(self, commentId, content):
-        if type(content) != str or content == "":
+        if type(content) != str or not content:
             raise ValueError("Treść uwagi musi być typu string!")
         comment = self.getStudentCommentById(commentId)
         self.comments.remove(comment)
@@ -219,7 +220,7 @@ class Student:
         return f"Zmieniono treść uwagi z \"{comment[1]}\" na \"{content}\""
 
     def writeToCsvStudentGrades(self, dirName):
-        if type(dirName) != str or dirName == "":
+        if type(dirName) != str or not dirName:
             raise ValueError("Nazwa pliku musi być typu string!")
         header = ['Przedmiot', 'Oceny', 'Średnia']
         try:
@@ -238,14 +239,6 @@ class Student:
                 else:
                     data = [lecture, self.getStudentGrades(lecture), self.getStudentAverage(lecture)]
                     writer.writerow(data)
-            # data =
-            # for student in self.students:
-            #     if student.lectures:
-            #         data = [student.id, student.name, student.surname, student.getStudentFinalAverage()]
-            #         writer.writerow(data)
-            #     else:
-            #         data = [student.id, student.name, student.surname, "Brak"]
-            #         writer.writerow(data)
         return "Zapisano dane do pliku csv!"
 
 
