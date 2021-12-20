@@ -1,5 +1,7 @@
 from src.sample.student import Student
 from itertools import count
+import csv
+import os
 
 
 class StudentList:
@@ -37,3 +39,22 @@ class StudentList:
         student = self.getStudentById(num)
         self.students.remove(student)
         del student
+
+    def writeToCsv(self, dirName):
+        header = ['Id', 'Imię', 'Nazwisko', 'Średnia']
+        try:
+            os.mkdir(f"./{dirName}")
+        except OSError as e:
+            print("Directory exists")
+        with open(f"./{dirName}/studentList.csv", 'w', encoding='UTF8') as f:
+            writer = csv.writer(f)
+            writer.writerow(header)
+            for student in self.students:
+                if student.lectures:
+                    data = [student.id, student.name, student.surname, student.getStudentFinalAverage()]
+                    writer.writerow(data)
+                else:
+                    data = [student.id, student.name, student.surname, "Brak"]
+                    writer.writerow(data)
+        return "Zapisano dane do pliku csv!"
+
