@@ -2,8 +2,8 @@ import unittest
 import json
 from src.sample.student import Student
 
-
-class TestFizzBuzz(unittest.TestCase):
+# Testy parametryczne z pliku do niepoprawnych argumentów przy usuwaniu oceny
+class TestStudentDeleteGrade(unittest.TestCase):
     def setUp(self):
         self.temp = Student("Jan", "Nowak", 10)
         self.temp.addStudentLecture("Matematyka")

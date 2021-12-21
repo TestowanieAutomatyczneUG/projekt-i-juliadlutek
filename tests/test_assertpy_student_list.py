@@ -9,9 +9,11 @@ class StudentListAssertpyTest(unittest.TestCase):
     def setUp(self):
         self.temp = StudentList()
 
+    # Testy do dodawania nowego studenta
     def test_add_student(self):
         assert_that(self.temp.addStudent("Maria", "Kowalska")).is_equal_to("Dodano nowego ucznia: Maria Kowalska")
 
+    # W przypadku, kiedy podamy nieprawidłowe imię lub nieprawidłowe nazwisko
     def test_add_student_number_name(self):
         assert_that(
             self.temp.addStudent) \
@@ -96,6 +98,8 @@ class StudentListAssertpyTest(unittest.TestCase):
             .when_called_with("Maria", 0.1) \
             .contains("Nazwisko ucznia musi być typu string!")
 
+    # Testy do funkcji zapisującej listę uczniów do csv
+    # Sprawdzamy, czy zapis się powiódł
     def test_write_to_csv_correct_output(self):
         self.temp.addStudent("Maria", "Kowalska")
         self.temp.addStudent("Jan", "Nowak")
@@ -107,6 +111,7 @@ class StudentListAssertpyTest(unittest.TestCase):
         maria.addStudentGrade("Angielski", 5)
         assert_that(self.temp.writeToCsvStudentList('testCsv')).is_equal_to("Zapisano dane do pliku csv!")
 
+    # Otwieramy plik i sprawdzamy czy nagłówek jest poprawny
     def test_write_to_csv_correct_header(self):
         if exists('./testCsv/studentList.csv'):
             csvFile = open('./testCsv/studentList.csv')
@@ -115,6 +120,7 @@ class StudentListAssertpyTest(unittest.TestCase):
             assert_that(header).contains("Id", "Imię", "Nazwisko", "Średnia")
         pass
 
+    # Otwieramy plik i sprawdzamy czy wartości są poprawne
     def test_write_to_csv_correct_records(self):
         if exists('./testCsv/studentList.csv'):
             csvFile = open('./testCsv/studentList.csv')
@@ -126,6 +132,7 @@ class StudentListAssertpyTest(unittest.TestCase):
             assert_that(rows).contains('1', 'Maria', 'Kowalska', '4.5', '2', 'Jan', 'Nowak', 'Brak')
         pass
 
+    # Sprawdzamy przypadek, kiedy nie ma żadnych studentów
     def test_write_to_csv_any_student(self):
         self.temp.writeToCsvStudentList('testCsv')
         csvFile = open('./testCsv/studentList.csv')
@@ -138,47 +145,48 @@ class StudentListAssertpyTest(unittest.TestCase):
                     rows.append(el)
         assert_that(rows).is_empty()
 
+    # Przypadki, kiedy podamy nieprawidłową nazwę katalogu
     def test_write_to_csv_dir_empty_str(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with("") \
-            .contains("Nazwa pliku musi być typu string!")
+            .contains("Nazwa katalogu musi być typu string!")
 
     def test_write_to_csv_dir_int(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with(3) \
-            .contains("Nazwa pliku musi być typu string!")
+            .contains("Nazwa katalogu musi być typu string!")
 
     def test_write_to_csv_dir_float(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with(-1.4) \
-            .contains("Nazwa pliku musi być typu string!")
+            .contains("Nazwa katalogu musi być typu string!")
 
     def test_write_to_csv_dir_bool(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with(False) \
-            .contains("Nazwa pliku musi być typu string!")
+            .contains("Nazwa katalogu musi być typu string!")
 
     def test_write_to_csv_dir_none(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with(None) \
-            .contains("Nazwa pliku musi być typu string!")
+            .contains("Nazwa katalogu musi być typu string!")
 
     def test_write_to_csv_dir_array(self):
         assert_that(
             self.temp.writeToCsvStudentList) \
             .raises(ValueError) \
             .when_called_with([]) \
-            .contains("Nazwa pliku musi być typu string!")
+            .contains("Nazwa katalogu musi być typu string!")
 
     def tearDown(self):
         self.temp = None

@@ -16,6 +16,7 @@ class Student:
         self.comments = []
         self.__comment_id = count(1, 1)
 
+    # Funkcja, która edytuje imię ucznia z testami w DocTest
     def editStudentName(self, name):
         """Zmienia imię ucznia
         >>> s = Student("Maria", "Kowalska", 10)
@@ -53,6 +54,7 @@ class Student:
         self.name = name
         return f"Zmieniono imię ucznia na {name}!"
 
+    # Funkcja, która edytuje nazwisko ucznia z testami w DocTest
     def editStudentSurname(self, surname):
         """Zmienia nazwisko ucznia
         >>> s = Student("Maria", "Kowalska", 10)
@@ -91,6 +93,8 @@ class Student:
         self.surname = surname
         return f"Zmieniono nazwisko ucznia na {surname}!"
 
+    # Funkcja która dodaje nowy przemiot do ucznia.
+    # Dodaje do słownika lectures klucz o podanej nazwie i jako wartość przypisuje mu pustą tablicę.
     def addStudentLecture(self, name):
         if type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
@@ -99,6 +103,8 @@ class Student:
             return f"Dodano nowy przedmiot - {name}!"
         raise Exception("Podany przedmiot już istnieje!")
 
+    # Funkcja, która usuwa przedmiot ucznia.
+    # Usuwa ze słownika lectures klucz o podanej nazwie.
     def deleteStudentLecture(self, name):
         if type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
@@ -107,6 +113,7 @@ class Student:
         del self.lectures[name]
         return f"Usunięto przedmiot - {name}!"
 
+    # Funkcja, która zmienia nazwę podanego przedmiotu.
     def editStudentLectureName(self, name, newName):
         if type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
@@ -117,6 +124,8 @@ class Student:
         self.lectures[newName] = self.lectures.pop(name)
         return f"Zmieniono nazwę przedmiotu {name} na {newName}."
 
+    # Funkcja, która dodaję nową ocenę do podanego przemiotu
+    # Do tablicy pod kluczem name dodaje nową ocenę.
     def addStudentGrade(self, name, grade):
         if type(grade) != int or grade < 1 or grade > 6:
             raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
@@ -127,6 +136,8 @@ class Student:
         self.lectures[name].append(grade)
         return f"Dodano ocenę {grade} do przedmiotu {name}"
 
+    # Funkcja, która usuwa ocenę z podanego przedmiotu.
+    # Znajduje pierwszy element o danej wartości i usuwa go.
     def deleteStudentGrade(self, name, grade):
         if type(grade) != int or grade < 1 or grade > 6:
             raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
@@ -139,6 +150,7 @@ class Student:
         self.lectures[name].remove(grade)
         return f"Usunięto ocenę {grade} z przedmiotu {name}"
 
+    # Funkcja, która zwraca oceny ucznia z podanego przedmiotu
     def getStudentGrades(self, name):
         if type(name) != str or not name:
             raise ValueError("Nazwa przedmiotu musi być typu string!")
@@ -146,6 +158,8 @@ class Student:
             raise Exception("Podany przedmiot nie istnieje!")
         return self.lectures[name]
 
+    # Funkcja, która edytuje ocenę ucznia z podanego przemiotu
+    # Znajduje pierwszą ocenę równą podanej, a następnie usuwa ją i dodaje do listy nową ocenę.
     def editStudentGrade(self, name, grade, newGrade):
         if type(grade) != int or grade < 1 or grade > 6:
             raise ValueError("Ocena musi być liczbą cakowitą z przedziału od 1 do 6")
@@ -163,6 +177,7 @@ class Student:
         self.lectures[name].append(newGrade)
         return f"Zmieniono ocenę {grade} na ocenę {newGrade}"
 
+    # Funkcja, która zwraca średnią ucznia z podanego przedmiotu.
     def getStudentAverage(self, name):
         grades = self.getStudentGrades(name)
         if not grades:
@@ -173,6 +188,7 @@ class Student:
         result = float("%.2f" % (amount / len(grades)))
         return result
 
+    # Funkcja, która zwraca średnią ucznia ze wszystkich przedmiotów
     def getStudentFinalAverage(self):
         if not self.lectures:
             raise Exception("Nie dodano żadnych przedmiotów do tego ucznia.")
@@ -182,9 +198,11 @@ class Student:
             if self.getStudentGrades(lecture):
                 i += 1
                 amount += self.getStudentAverage(lecture)
-        result = float("%.2f" %(amount / i))
+        result = float("%.2f" % (amount / i))
         return result
 
+    # Funkcja, która dodaje uwagę do ucznia
+    # Uwagi są przechowywane w formie tablic [id, wartość]
     def addStudentComment(self, content):
         if type(content) != str or not content:
             raise ValueError("Treść uwagi musi być typu string!")
@@ -192,12 +210,14 @@ class Student:
         self.comments.append([commentId, content])
         return f"Dodano uwagę: {commentId}. {content}"
 
+    # Funkcja, która zwraca wszystkie uwagi ucznia i ich id
     def getAllStudentComments(self):
         result = ""
         for comment in self.comments:
             result += str(comment[0]) + ". " + str(comment[1]) + "\n"
         return result
 
+    # Funkcja, która zwraca uwagę po id
     def getStudentCommentById(self, commentId):
         if type(commentId) != int or commentId <= 0:
             raise ValueError("Id uwagi musi być dodatnią liczbą całkowitą!")
@@ -206,11 +226,14 @@ class Student:
                 return comment
         raise Exception("Uwaga o podanym id nie istnieje!")
 
+    # Funkcja, która usuwa uwagę po id
     def deleteStudentCommentById(self, commentId):
         comment = self.getStudentCommentById(commentId)
         self.comments.remove(comment)
         return f"Usunięto uwagę \"{comment[1]}\""
 
+    # Funkcja, która edytuje uwagę po id
+    # Pobiera uwagę o danym id, a następnie usuwa ją i wstawia nową z tym samym id
     def editStudentCommentById(self, commentId, content):
         if type(content) != str or not content:
             raise ValueError("Treść uwagi musi być typu string!")
@@ -219,9 +242,12 @@ class Student:
         self.comments.append([commentId, content])
         return f"Zmieniono treść uwagi z \"{comment[1]}\" na \"{content}\""
 
+    # Funkcja, która zapisuje przedmioty i oceny ucznia w formacie csv w podanym katalogu.
+    # Plik z listą przedmiotów zawiera kolumny przedmiot, oceny, średnia z przedmiotu
+    # Jeśli uczeń nie ma przypisanych ocen z jakiegoś przedmiotu, w kolumnach oceny i średnia zostaje wpisane "Brak"
     def writeToCsvStudentGrades(self, dirName):
         if type(dirName) != str or not dirName:
-            raise ValueError("Nazwa pliku musi być typu string!")
+            raise ValueError("Nazwa katalogu musi być typu string!")
         header = ['Przedmiot', 'Oceny', 'Średnia']
         try:
             os.mkdir(f"./{dirName}")

@@ -3,7 +3,7 @@ from hamcrest import *
 from src.sample.student import Student
 from hamcrest.core.base_matcher import BaseMatcher
 
-
+# Własny matcher sprawdzający czy wynik jest typu float
 class IsFloat(BaseMatcher):
     def _matches(self, item):
         if type(item) != float:
@@ -22,14 +22,17 @@ class StudentPyHamcrestTest(unittest.TestCase):
     def setUp(self):
         self.temp = Student("Jan", "Nowak", 10)
 
+    # Testy do usuwania przedmiotu
     def test_delete_student_lecture(self):
         self.temp.addStudentLecture("Matematyka")
         assert_that(self.temp.deleteStudentLecture("Matematyka"), equal_to("Usunięto przedmiot - Matematyka!"))
 
+    # W przypadku, kiedy podany przedmiot nie istnieje
     def test_delete_not_existing_student_lecture(self):
         self.temp.addStudentLecture("Matematyka")
         assert_that(calling(self.temp.deleteStudentLecture).with_args("Angielski"), raises(Exception))
 
+    # W przypadku, kiedy podamy nieprawidłową nazwę przemiotu
     def test_delete_student_lecture_empty_str(self):
         assert_that(calling(self.temp.deleteStudentLecture).with_args(""), raises(ValueError))
 
@@ -48,6 +51,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
     def test_delete_student_lecture_empty_array(self):
         assert_that(calling(self.temp.deleteStudentLecture).with_args([]), raises(ValueError))
 
+    # Testy do obliczania średniej ze wszystkich przedmiotów
     def test_get_student_final_average_correct(self):
         self.temp.addStudentLecture("Matematyka")
         self.temp.addStudentLecture("Angielski")
@@ -58,6 +62,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.addStudentGrade("Matematyka", 4)
         assert_that(self.temp.getStudentFinalAverage(), close_to(4, 0.1))
 
+    # Z użyciem własnego matchera
     def test_get_student_final_average_type(self):
         self.temp.addStudentLecture("Matematyka")
         self.temp.addStudentLecture("Angielski")
@@ -67,9 +72,11 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.addStudentGrade("Matematyka", 4)
         assert_that(self.temp.getStudentFinalAverage(), is_float())
 
+    # W przypadku, kiedy nie ma żadnych przedmiotów
     def test_get_student_final_average_any_lectures(self):
         assert_that(calling(self.temp.getStudentFinalAverage).with_args(), raises(Exception))
 
+    # W przypadku, kiedy do jakiegoś przedmiotu nie ma dodanych ocen
     def test_get_student_final_average_lecture_without_grades(self):
         self.temp.addStudentLecture("Matematyka")
         self.temp.addStudentLecture("Angielski")
@@ -77,6 +84,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.addStudentGrade("Angielski", 3)
         assert_that(self.temp.getStudentFinalAverage(), greater_than(3))
 
+    # Testy do edycji nazwy przdmiotu
     def test_edit_student_lecture_name_correct(self):
         self.temp.addStudentLecture("matematyka")
         assert_that(self.temp.editStudentLectureName("matematyka", "Matematyka"),
@@ -90,9 +98,11 @@ class StudentPyHamcrestTest(unittest.TestCase):
         assert_that(self.temp.getStudentGrades("Matematyka"),
                     contains_inanyorder(4, 5))
 
+    # W przypadku, kiedy przedmiot, który chcemy edytować nie istnieje
     def test_edit_student_lecture_not_existing(self):
         assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", "Matematyka"), raises(Exception))
 
+    #W przypadku, kiedy podamy nieprawidłową nazwę przedmiotu
     def test_edit_student_lecture_name_empty_str(self):
         self.temp.addStudentLecture("matematyka")
         assert_that(calling(self.temp.editStudentLectureName).with_args("", "Matematyka"), raises(ValueError))
@@ -141,6 +151,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.addStudentLecture("matematyka")
         assert_that(calling(self.temp.editStudentLectureName).with_args("matematyka", None), raises(ValueError))
 
+    # Testy do edycji oceny do danego przedmiotu
     def test_edit_student_grade_correct_output(self):
         self.temp.addStudentLecture("Matematyka")
         self.temp.addStudentGrade("Matematyka", 5)
@@ -154,6 +165,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.editStudentGrade("Matematyka", 3, 5)
         assert_that(self.temp.getStudentGrades("Matematyka"), is_not(contains_exactly(3)))
 
+    # Sprawdzający, czy zmienia się tylko jedna ocena o podanej watości
     def test_only_one_student_grade(self):
         self.temp.addStudentLecture("Matematyka")
         self.temp.addStudentGrade("Matematyka", 5)
@@ -162,13 +174,16 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.editStudentGrade("Matematyka", 5, 4)
         assert_that(self.temp.getStudentGrades("Matematyka"), contains_inanyorder(5, 5, 4))
 
+    # Testy do usuwania uwagi
     def test_delete_student_comment_correct(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(self.temp.deleteStudentCommentById(1), equal_to("Usunięto uwagę \"Spóżnienie na lekcję.\""))
 
+    # W przypadku, kiedy uwaga o podanym id nie istnieje
     def test_delete_student_comment_not_existing(self):
         assert_that(calling(self.temp.deleteStudentCommentById).with_args(3), raises(Exception))
 
+    # W przypadku, kiedy podamy nieprawidłowe id uwagi
     def test_delete_student_comment_str(self):
         assert_that(calling(self.temp.deleteStudentCommentById).with_args("ala"), raises(ValueError))
 
@@ -193,6 +208,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
         self.temp.deleteStudentCommentById(2)
         assert_that(self.temp.getAllStudentComments(), is_not(contains_string("Brak pracy domowej.")))
 
+    # Testy do edycji uwagi
     def test_edit_student_comment_not_contains_old(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         self.temp.editStudentCommentById(1, "Spóźnienie na wykład.")
@@ -209,6 +225,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
             self.temp.editStudentCommentById(1, "Spóźnienie na wykład."),
             equal_to("Zmieniono treść uwagi z \"Spóżnienie na lekcję.\" na \"Spóźnienie na wykład.\""))
 
+    # W przypadku, kiedy uwaga o podanym id nie istnieje
     def test_edit_student_comment_not_existing(self):
         assert_that(
             calling(self.temp.editStudentCommentById)
@@ -216,6 +233,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
             raises(Exception)
         )
 
+    # W przypadku, kiedy podamy nieprawidłowe id uwagi
     def test_edit_student_comment_id_negative(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
@@ -272,6 +290,7 @@ class StudentPyHamcrestTest(unittest.TestCase):
             raises(ValueError),
         )
 
+    # W przypadku, kiedy podamy nieprawidłową treść uwagi
     def test_edit_student_comment_content_int(self):
         self.temp.addStudentComment("Spóżnienie na lekcję.")
         assert_that(
