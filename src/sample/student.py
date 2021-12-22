@@ -4,7 +4,7 @@ import csv
 
 
 class Student:
-    def __init__(self, name, surname, studentId):
+    def __init__(self, name, surname, studentId, lectures='', comments=''):
         if type(name) != str or len(name) == 0:
             raise ValueError("Imię ucznia musi być typu string!")
         elif type(surname) != str or len(surname) == 0:
@@ -15,6 +15,12 @@ class Student:
         self.lectures = {}
         self.comments = []
         self.__comment_id = count(1, 1)
+        if lectures:
+            for lecture in lectures:
+                self.lectures[lecture] = lectures[lecture]
+        if comments:
+            for comment in comments:
+                self.comments.append([next(self.__comment_id), comment])
 
     # Funkcja, która edytuje imię ucznia z testami w DocTest
     def editStudentName(self, name):

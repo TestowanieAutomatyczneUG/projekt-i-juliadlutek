@@ -8,15 +8,18 @@ from os.path import exists
 
 class StudentAssertpyTest(unittest.TestCase):
     def setUp(self):
-        self.temp = Student("Jan", "Nowak", 10)
+        self.temp = Student("Jan", "Nowak", 1,
+                            {"Matematyka": [5, 4, 4], "Angielski": [4, 3, 1], "Fizyka": []},
+                            ["Uwaga1", "Uwaga2", "Uwaga3"])
+        # Uczeń bez przedmiotów, ocen i uwag
+        self.temp2 = Student("Maria", "Kowalska", 2)
 
     # Testy do dodawania przedmiotu do ucznia
     def test_add_student_lecture(self):
-        assert_that(self.temp.addStudentLecture("Matematyka")).is_equal_to("Dodano nowy przedmiot - Matematyka!")
+        assert_that(self.temp.addStudentLecture("Polski")).is_equal_to("Dodano nowy przedmiot - Polski!")
 
     # W przypadku, kiedy chcemy drugi raz dodać ten sam przedmiot
     def test_add_student_repeat_lecture(self):
-        self.temp.addStudentLecture("Matematyka")
         assert_that(
             self.temp.addStudentLecture) \
             .raises(Exception) \
@@ -68,32 +71,26 @@ class StudentAssertpyTest(unittest.TestCase):
 
     # Testy do usuwania oceny z przedmiotu
     def test_delete_student_grade_correct(self):
-        self.temp.addStudentLecture("Matematyka")
-        self.temp.addStudentGrade("Matematyka", 5)
         assert_that(self.temp.deleteStudentGrade("Matematyka", 5)) \
             .is_equal_to("Usunięto ocenę 5 z przedmiotu Matematyka")
 
     def test_delete_student_grade_correct_contains(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        assert_that(self.temp.deleteStudentGrade("Angielski", 2)).contains("2", "Angielski")
+        assert_that(self.temp.deleteStudentGrade("Angielski", 3)).contains("3", "Angielski")
 
     # W przypadku, kiedy podany przedmiot nie istnieje
     def test_delete_student_grade_not_existing_lecture(self):
         assert_that(
             self.temp.deleteStudentGrade) \
             .raises(Exception) \
-            .when_called_with("Angielski", 5) \
+            .when_called_with("Polski", 5) \
             .contains("Podany przedmiot nie istnieje!")
 
     # W przypradku, kiedy podana ocena nie istnieje
     def test_delete_student_grade_not_existing_grade(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
         assert_that(
             self.temp.deleteStudentGrade) \
             .raises(Exception) \
-            .when_called_with("Angielski", 5) \
+            .when_called_with("Angielski", 2) \
             .contains("Podana ocena nie istnieje!")
 
     # W przypadku, kiedy podamy nieprawidłową nazwę przemiotu
@@ -199,39 +196,22 @@ class StudentAssertpyTest(unittest.TestCase):
     # Testy do pobierania ocen z danego przedmiotu
     # W przypadku kiedy nie ma żadnych przypisanych ocen
     def test_get_student_grades_empty(self):
-        self.temp.addStudentLecture("Angielski")
-        assert_that(self.temp.getStudentGrades("Angielski")).is_empty()
+        assert_that(self.temp.getStudentGrades("Fizyka")).is_empty()
 
     # Różne asercje
     def test_get_student_grades_length(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        self.temp.addStudentGrade("Angielski", 4)
-        self.temp.addStudentGrade("Angielski", 5)
         assert_that(self.temp.getStudentGrades("Angielski")).is_length(3)
 
     def test_get_student_grades_contains(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        self.temp.addStudentGrade("Angielski", 4)
-        assert_that(self.temp.getStudentGrades("Angielski")).contains(2)
+        assert_that(self.temp.getStudentGrades("Angielski")).contains(3)
 
     def test_get_student_grades_not_contains(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        self.temp.addStudentGrade("Angielski", 4)
-        assert_that(self.temp.getStudentGrades("Angielski")).does_not_contain(3)
+        assert_that(self.temp.getStudentGrades("Angielski")).does_not_contain(2)
 
     def test_get_student_grades_equality(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        self.temp.addStudentGrade("Angielski", 4)
-        self.temp.addStudentGrade("Angielski", 5)
-        assert_that(self.temp.getStudentGrades("Angielski")).is_equal_to([2, 4, 5])
+        assert_that(self.temp.getStudentGrades("Angielski")).is_equal_to([4, 3, 1])
 
     def test_get_student_grades_not_empty(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
         assert_that(self.temp.getStudentGrades("Angielski")).is_not_empty()
 
     # W przypadku, kiedy podany przemiot nie istnieje
@@ -239,7 +219,7 @@ class StudentAssertpyTest(unittest.TestCase):
         assert_that(
             self.temp.getStudentGrades) \
             .raises(Exception) \
-            .when_called_with("Matematyka") \
+            .when_called_with("Polski") \
             .contains("Podany przedmiot nie istnieje!")
 
     # W przypadku, kiedy podamy nieprawidłową nazwę przedmiotu
@@ -308,53 +288,33 @@ class StudentAssertpyTest(unittest.TestCase):
     # Testy do średniej z danego przedmiotu
     # Z użyciem własnych matcherów
     def test_get_student_average_type(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        self.temp.addStudentGrade("Angielski", 4)
         assert_that(self.temp.getStudentAverage("Angielski")).is_float()
 
     def test_get_student_average_format(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        self.temp.addStudentGrade("Angielski", 4)
-        self.temp.addStudentGrade("Angielski", 5)
         assert_that(self.temp.getStudentAverage("Angielski")).is_formatted_correctly()
 
     # Z użyciem różnych innych asercji
     def test_get_student_average_correct(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 4)
-        self.temp.addStudentGrade("Angielski", 5)
-        self.temp.addStudentGrade("Angielski", 5)
-        assert_that(self.temp.getStudentAverage("Angielski")).is_close_to(5, 0.4)
+        assert_that(self.temp.getStudentAverage("Angielski")).is_close_to(3, 0.4)
 
     def test_get_student_average_correct2(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 4)
-        self.temp.addStudentGrade("Angielski", 5)
-        self.temp.addStudentGrade("Angielski", 5)
-        assert_that(self.temp.getStudentAverage("Angielski")).is_between(4.5, 5)
+        assert_that(self.temp.getStudentAverage("Angielski")).is_between(2, 3)
 
     def test_get_student_average_correct3(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 4)
-        self.temp.addStudentGrade("Angielski", 5)
-        self.temp.addStudentGrade("Angielski", 5)
-        assert_that(self.temp.getStudentAverage("Angielski")).is_less_than(4.7)
+        assert_that(self.temp.getStudentAverage("Angielski")).is_less_than(3)
 
     # W przypadku, kiedy nie ma żadnych ocen dodanych do przedmiotu
     def test_get_student_average_empty_grades(self):
-        self.temp.addStudentLecture("Angielski")
         assert_that(
             self.temp.getStudentAverage) \
             .raises(Exception) \
-            .when_called_with("Angielski") \
+            .when_called_with("Fizyka") \
             .contains("Nie dodano żadnych ocen do tego przedmiotu.")
 
     # Testy do dodawania uwagi do ucznia
     def test_add_student_comment_correct(self):
         assert_that(self.temp.addStudentComment("Spóźnienie na lekcję.")) \
-            .is_equal_to("Dodano uwagę: 1. Spóźnienie na lekcję.")
+            .is_equal_to("Dodano uwagę: 4. Spóźnienie na lekcję.")
 
     # W przypadku kiedy podamy nieprawidłową treść
     def test_add_student_comment_content_empty(self):
@@ -401,18 +361,15 @@ class StudentAssertpyTest(unittest.TestCase):
 
     # Testy do pobierania wszytskich uwag
     def test_get_all_student_comments(self):
-        self.temp.addStudentComment("Spóżnienie na lekcję.")
-        self.temp.addStudentComment("Brak pracy domowej.")
-        assert_that(self.temp.getAllStudentComments()).contains("Spóżnienie na lekcję.", "Brak pracy domowej.")
+        assert_that(self.temp.getAllStudentComments()).contains("Uwaga1", "Uwaga2", "Uwaga3")
 
     # W przypadku, kiedy nie ma żadnych uwag
     def test_get_all_student_comments_empty(self):
-        assert_that(self.temp.getAllStudentComments()).is_empty()
+        assert_that(self.temp2.getAllStudentComments()).is_empty()
 
     # Testy do pobierania uwag po id
     def test_get_student_comment_by_id_correct(self):
-        self.temp.addStudentComment("Spóżnienie na lekcję.")
-        assert_that(self.temp.getStudentCommentById(1)).contains(1, "Spóżnienie na lekcję.")
+        assert_that(self.temp.getStudentCommentById(1)).contains(1, "Uwaga1")
 
     # W przypadku, kiedy uwaga o danym id nie istnieje
     def test_get_student_comment_by_id_not_existing(self):
@@ -420,13 +377,13 @@ class StudentAssertpyTest(unittest.TestCase):
         assert_that(
             self.temp.getStudentCommentById) \
             .raises(Exception) \
-            .when_called_with(2) \
+            .when_called_with(5) \
             .contains("Uwaga o podanym id nie istnieje!")
 
     # W przypadku, kiedy nie dodano żadnych uwag.
     def test_get_student_comment_by_id_empty_comments(self):
         assert_that(
-            self.temp.getStudentCommentById) \
+            self.temp2.getStudentCommentById) \
             .raises(Exception) \
             .when_called_with(1) \
             .contains("Uwaga o podanym id nie istnieje!")
@@ -484,14 +441,6 @@ class StudentAssertpyTest(unittest.TestCase):
     # Testy do funkcji zapisującej oceny ucznia do csv
     # Sprawdzamy, czy zapis się powiódł
     def test_write_to_csv_grades_correct_ouput(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        self.temp.addStudentGrade("Angielski", 4)
-        self.temp.addStudentGrade("Angielski", 5)
-        self.temp.addStudentLecture("Matematyka")
-        self.temp.addStudentGrade("Matematyka", 5)
-        self.temp.addStudentGrade("Matematyka", 5)
-        self.temp.addStudentGrade("Matematyka", 3)
         assert_that(self.temp.writeToCsvStudentGrades('testCsv')).is_equal_to("Zapisano dane do pliku csv!")
 
     # Otwieramy plik i sprawdzamy czy nagłówek jest poprawny
@@ -512,32 +461,16 @@ class StudentAssertpyTest(unittest.TestCase):
             for row in csvreader:
                 for el in row:
                     rows.append(el)
-            assert_that(rows).contains('Angielski', '[2, 4, 5]', '3.67', 'Matematyka', '[5, 5, 3]', '4.33')
+            assert_that(rows).contains('Angielski', '[4, 3, 1]', '2.67', 'Matematyka', '[5, 4, 4]', '4.33', 'Fizyka', 'Brak')
         pass
 
     # Sprawdzamy przypadek, kiedy nie ma żadnych przedmiotów
     def test_write_to_csv_grades_with_any_lectures(self):
         assert_that(
-            self.temp.writeToCsvStudentGrades) \
+            self.temp2.writeToCsvStudentGrades) \
             .raises(Exception) \
             .when_called_with('testCsv') \
             .contains("Nie dodano żadnych przedmiotów do tego ucznia.")
-
-    # Sprawdzamy przypadek, kiedy do przedmiotu nie ma dodanych ocen
-    def test_write_to_csv_grades_with_any_grades(self):
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 2)
-        self.temp.addStudentGrade("Angielski", 4)
-        self.temp.addStudentGrade("Angielski", 5)
-        self.temp.addStudentLecture("Matematyka")
-        self.temp.writeToCsvStudentGrades('testCsv')
-        csvFile = open('testCsv/student10grades.csv')
-        csvreader = csv.reader(csvFile)
-        rows = []
-        for row in csvreader:
-            for el in row:
-                rows.append(el)
-        assert_that(rows).contains('Angielski', '[2, 4, 5]', '3.67', 'Matematyka', 'Brak', 'Brak')
 
     # Przypadki, kiedy podamy nieprawidłową nazwę katalogu
     def test_write_to_csv_grades_dir_empty_str(self):

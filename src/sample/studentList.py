@@ -6,9 +6,12 @@ import os
 
 # Klasa studentlist przechowuje listę obiektów klasy Student
 class StudentList:
-    def __init__(self):
+    def __init__(self, students=""):
         self.students = []
         self.__auto_id = count(1, 1)
+        if students:
+            for student in students:
+                self.students.append(student)
 
     # Funkcja, która pobiera imie i nazwisko, a następnie tworzy obiekt klasy Student z automatycznie wygenerowanym
     # id i dodaje go do listy studentów

@@ -2,12 +2,11 @@ import unittest
 import json
 from src.sample.student import Student
 
+
 # Testy parametryczne z pliku do niepoprawnych argumentów przy usuwaniu oceny
 class TestStudentDeleteGrade(unittest.TestCase):
     def setUp(self):
-        self.temp = Student("Jan", "Nowak", 10)
-        self.temp.addStudentLecture("Matematyka")
-        self.temp.addStudentGrade("Matematyka", 4)
+        self.temp = Student("Jan", "Nowak", 10, {"Matematyka": [4]})
 
     def test_from_file(self):
         file = open("../data/data.json")

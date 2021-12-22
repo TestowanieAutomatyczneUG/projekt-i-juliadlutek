@@ -7,8 +7,7 @@ from parameterized import parameterized, parameterized_class
 # Testowanie niepoprawnych argumentów
 class StudentParametrizedPackageAddGrade(unittest.TestCase):
     def setUp(self):
-        self.temp = Student("Jan", "Nowak", 10)
-        self.temp.addStudentLecture("Angielski")
+        self.temp = Student("Jan", "Nowak", 10, {"Angielski": []})
 
     @parameterized.expand([
         # Niepoprawna ocena
@@ -42,9 +41,7 @@ class StudentParametrizedPackageAddGrade(unittest.TestCase):
 ])
 class StudentParameterizedPackageAddGrade2(unittest.TestCase):
     def setUp(self):
-        self.temp = Student("Jan", "Nowak", 10)
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentLecture("Matematyka")
+        self.temp = Student("Jan", "Nowak", 10, {"Angielski": [], "Matematyka": []})
 
     def test_add_student_grade_correct_parameterized(self):
         self.assertEqual(self.temp.addStudentGrade(self.name, self.grade), self.expected)
@@ -53,10 +50,7 @@ class StudentParameterizedPackageAddGrade2(unittest.TestCase):
 # Testowanie niepoprawnych argumentów funkcji edytującej ocenę
 class StudentParametrizedPackageEditGrade(unittest.TestCase):
     def setUp(self):
-        self.temp = Student("Jan", "Nowak", 10)
-        self.temp.addStudentLecture("Angielski")
-        self.temp.addStudentGrade("Angielski", 1)
-        self.temp.addStudentGrade("Angielski", 3)
+        self.temp = Student("Jan", "Nowak", 10, {"Angielski": [1, 3]})
 
     @parameterized.expand([
         # Niepoprawny argument grade

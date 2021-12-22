@@ -1,13 +1,19 @@
 import unittest
 from assertpy import *
 from src.sample.studentList import StudentList
+from src.sample.student import Student
 import csv
 from os.path import exists
 
 
 class StudentListAssertpyTest(unittest.TestCase):
     def setUp(self):
-        self.temp = StudentList()
+        mariaKowalska = Student("Maria", "Kowalska", 1,
+                                {"Matematyka": [5, 3], "Angielski": [5]})
+        janNowak = Student("Jan", "Nowak", 2)
+        self.temp = StudentList([mariaKowalska, janNowak])
+        # Lista bez studentów
+        self.temp2 = StudentList()
 
     # Testy do dodawania nowego studenta
     def test_add_student(self):
@@ -101,14 +107,6 @@ class StudentListAssertpyTest(unittest.TestCase):
     # Testy do funkcji zapisującej listę uczniów do csv
     # Sprawdzamy, czy zapis się powiódł
     def test_write_to_csv_correct_output(self):
-        self.temp.addStudent("Maria", "Kowalska")
-        self.temp.addStudent("Jan", "Nowak")
-        maria = self.temp.getStudentById(1)
-        maria.addStudentLecture("Matematyka")
-        maria.addStudentGrade("Matematyka", 5)
-        maria.addStudentGrade("Matematyka", 3)
-        maria.addStudentLecture("Angielski")
-        maria.addStudentGrade("Angielski", 5)
         assert_that(self.temp.writeToCsvStudentList('testCsv')).is_equal_to("Zapisano dane do pliku csv!")
 
     # Otwieramy plik i sprawdzamy czy nagłówek jest poprawny
@@ -134,8 +132,8 @@ class StudentListAssertpyTest(unittest.TestCase):
 
     # Sprawdzamy przypadek, kiedy nie ma żadnych studentów
     def test_write_to_csv_any_student(self):
-        self.temp.writeToCsvStudentList('testCsv')
-        csvFile = open('./testCsv/studentList.csv')
+        self.temp2.writeToCsvStudentList('testCsv2')
+        csvFile = open('./testCsv2/studentList.csv')
         csvreader = csv.reader(csvFile)
         rows = []
         header = next(csvreader)
