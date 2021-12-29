@@ -446,7 +446,7 @@ class StudentAssertpyTest(unittest.TestCase):
     # Otwieramy plik i sprawdzamy czy nagłówek jest poprawny
     def test_write_to_csv_grades_correct_header(self):
         if exists('./testCsv/studentList.csv'):
-            csvFile = open('./testCsv/student10grades.csv')
+            csvFile = open('./testCsv/student1grades.csv')
             csvreader = csv.reader(csvFile)
             header = next(csvreader)
             assert_that(header).contains("Przedmiot", "Oceny", "Średnia")
@@ -455,7 +455,7 @@ class StudentAssertpyTest(unittest.TestCase):
     # Otwieramy plik i sprawdzamy czy wartości są poprawne
     def test_write_to_csv_grades_records(self):
         if exists('./testCsv/studentList.csv'):
-            csvFile = open('./testCsv/student10grades.csv')
+            csvFile = open('./testCsv/student1grades.csv')
             csvreader = csv.reader(csvFile)
             rows = []
             for row in csvreader:
