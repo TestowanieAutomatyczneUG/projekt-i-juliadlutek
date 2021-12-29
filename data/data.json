@@ -1,0 +1,16 @@
+[
+	["Matematyka", 10, 1],
+	["Matematyka", -10, 1],
+	["Matematyka", "", 1],
+	["Matematyka", "ala", 1],
+	["Matematyka", "False", 1],
+	["Matematyka", "None", 1],
+	["Matematyka", [], 1],
+	["Matematyka", 5, 2],
+	["Polski", 5, 2],
+	["", 5, 1],
+	[23, 5, 1],
+	[2.34, 5, 1],
+	[[], 5, 1]
+
+]
